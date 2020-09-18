@@ -113,7 +113,7 @@ a:hover {
 }
 
 .text-break {
-	display: block!important;
+	display: block !important;
 }
 
 .theme-dark .navbar-overlap:after {
@@ -125,11 +125,15 @@ a:hover {
 }
 
 .theme-dark .chart rect {
-    fill: #354052;
+	fill: #354052;
 }
 
 .theme-dark .chart text {
-    fill: #ffffff;
-    mix-blend-mode: difference;
-    font-weight: 400;
+	fill: #ffffff;
+	mix-blend-mode: difference;
+	font-weight: 400;
+}
+
+#stats table td {
+	word-break: break-word;
 }
