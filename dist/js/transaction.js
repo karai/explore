@@ -9,13 +9,12 @@ $(document).ready(function() {
   channel = decodeURIComponent(channel);
 
   $.ajax({
-    url: `${channel}/api/v1/transactions/${hash}`,
+    url: `${channel}/api/v1/transaction/${hash}`,
     dataType: 'json',
     type: 'GET',
     cache: 'false',
     success: function (txn) {
-      // console.log(txn);
-
+      console.log(txn);
       $('#Ktransaction').text(txn.hash);
     },
     error: function() {

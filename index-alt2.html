@@ -30,6 +30,8 @@
 	<!-- Demo - needs to be removed  -->
 	<script src="./dist/js/third-party.js"></script>
 
+  <script src="./dist/js/common.js"></script>
+  <script src="./dist/js/index.js"></script>
 </head>
 
 <body class="antialiased">
@@ -120,7 +122,7 @@
 											<line x1="21" y1="21" x2="15" y2="15"></line>
 										</svg>
 									</span>
-									<input type="text" id="searchValue" class="form-control form-control-dark" placeholder="Search by Block Height / Hash, Transaction Hash, or Payment Id">
+									<input type="text" id="searchValue" class="form-control form-control-dark" placeholder="Search by Transaction Hash">
 								</div>
 							</div>
 						</div>
@@ -151,31 +153,31 @@
 								<tbody>
 									<tr>
 										<th>Name</th>
-										<td>⏣ Karai</td>
+										<td id="channelName"></td>
 									</tr>
 									<tr>
 										<th>Description</th>
-										<td>This is a general purpose channel</td>
+										<td id="channelDescription"></td>
 									</tr>
 									<tr>
 										<th>Version</th>
-										<td>0.20.1</td>
+										<td id="channelVersion"></td>
 									</tr>
 									<tr>
 										<th>Contact</th>
-										<td>rock@karai.io</td>
+										<td id="channelContact"></td>
 									</tr>
 									<tr>
 										<th>pub_key_string</th>
-										<td>6a24c25558db06882271fc4123dc6922c592626543e28d6e1964747f707c5e3e</td>
+										<td id="channelPubKey"></td>
 									</tr>
 									<tr>
 										<th>tx_objects_on_disk</th>
-										<td>84871</td>
+										<td id="channelTxCount"></td>
 									</tr>
 									<tr>
 										<th>tx_graph_users</th>
-										<td>0</td>
+										<td id="channelUsersCount"></td>
 									</tr>
 								</tbody>
 							</table>
@@ -204,35 +206,14 @@
 							<h4 class="card-title">Transactions <span id="KtransactionCount" class="badge badge-pill bg-green">7</span></h4>
 						</div>
 						<div class="table-responsive">
-							<table class="table table-vcenter card-table">
+							<table id=transactions class="table table-vcenter card-table">
 								<thead>
 									<tr>
 										<th>#</th>
 										<th>tx_type</th>
 										<th>tx_hash</th>
-										<th>tx_data</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<th>1</th>
-										<td><span class="badge bg-azure">0</span></td>
-										<td><small>85c547c55ae86d88b50a8b071d057e4660da7b61b98351dc49c30229541820355bca8ef4cff8886aa70e449d419ca6a1153bd52816fbd82ea50a8edf110dffe4</small></td>
-										<td>Hello Karai</td>
-									</tr>
-									<tr>
-										<th>2</th>
-										<td><span class="badge bg-purple">2</span></td>
-										<td><small>22e6f6fb8068bdd0d7ebb539dcfcc6e00ca2b858c18e55908c945b8b264fb6f0c4935be669ae85cbb5164c40119c39774bd59a4ad682d4d5cba00e001c9d564e</small></td>
-										<td>1599275852683597612</td>
-									</tr>
-									<tr>
-										<th>3</th>
-										<td><span class="badge bg-purple">2</span></td>
-										<td><small>a30e2c4008ef0b152435976d8d59998e7b9f904bed01834ab86ea49b7db3e9e13760788bdbe33c344f837ee27d88935ae3e31f690692c8e993fa0e8f2533f3a9</small></td>
-										<td>1599275852685509556</td>
-									</tr>
-								</tbody>
 							</table>
 						</div>
 					</div>
