@@ -1,6 +1,6 @@
 function isHash (str) {
   // TODO: add better karai tx hash validation here
-  const regex = new RegExp('^[0-9a-fA-F]');
+  const regex = new RegExp('^[0-9a-fA-F]+$');
   return regex.test(str);
 }
 
