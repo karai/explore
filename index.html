@@ -25,15 +25,13 @@
 		body {
 			display: none;
 		}
-
 	</style>
 
 	<!-- Demo - needs to be removed  -->
-  <script src="./dist/js/third-party.js"></script>
+	<script src="./dist/js/third-party.js"></script>
 
-  <!-- <script src="./dist/js/common.js"></script>
-  <script src="./dist/js/index.js"></script> -->
-
+	<script src="./dist/js/common.js"></script>
+	<script src="./dist/js/index.js"></script>
 </head>
 
 <body class="antialiased">
@@ -96,8 +94,8 @@
 									</span>
 								</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="./supply.html">
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
 									<span class="nav-link-icon d-lg-inline-block">
 										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 											<path stroke="none" d="M0 0h24v24H0z"></path>
@@ -109,9 +107,13 @@
 										</svg>
 									</span>
 									<span class="nav-link-title">
-										Currency Supply
+										Channels
 									</span>
 								</a>
+								<div class="dropdown-menu dropdown-menu-arrow">
+									<a href="#" class="dropdown-item ">Icarus (Unstable)</a>
+									<a href="#" class="dropdown-item ">Daedalus (Stable)</a>
+								</div>
 							</li>
 						</ul>
 						<div class="ml-lg-auto pl-lg-4 py-2 py-md-0 order-last flex-grow-1 flex-md-grow-1">
@@ -124,7 +126,7 @@
 											<line x1="21" y1="21" x2="15" y2="15"></line>
 										</svg>
 									</span>
-									<input type="text" id="searchValue" class="form-control form-control-dark" placeholder="Search by Block Height / Hash, Transaction Hash, or Payment Id">
+									<input type="text" id="searchValue" class="form-control form-control-dark" placeholder="Search by Transaction Hash">
 								</div>
 							</div>
 						</div>
@@ -146,99 +148,82 @@
 				</div>
 				<div class="row row-deck row-cards">
 
-					<div class="col-sm-6 col-lg-3">
-						<div class="card">
-							<div class="card-body p-2 text-center">
-								<div class="text-right text-green">
-									<span class="text-green d-inline-flex align-items-center lh-1">
-										6% <svg xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z"></path>
-											<polyline points="3 17 9 11 13 15 21 7"></polyline>
-											<polyline points="14 7 21 7 21 14"></polyline>
-										</svg>
-									</span>
-								</div>
-								<div class="h1 m-0">43</div>
-								<div class="text-muted mb-4">New Tickets</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-sm-6 col-lg-3">
-						<div class="card">
-							<div class="card-body p-2 text-center">
-								<div class="text-right text-red">
-									<span class="text-red d-inline-flex align-items-center lh-1">
-										-2% <svg xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z"></path>
-											<polyline points="3 7 9 13 13 9 21 17"></polyline>
-											<polyline points="21 10 21 17 14 17"></polyline>
-										</svg>
-									</span>
-								</div>
-								<div class="h1 m-0">95</div>
-								<div class="text-muted mb-4">Daily Earnings</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-sm-6 col-lg-3">
-						<div class="card">
-							<div class="card-body p-2 text-center">
-								<div class="text-right text-green">
-									<span class="text-green d-inline-flex align-items-center lh-1">
-										9% <svg xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z"></path>
-											<polyline points="3 17 9 11 13 15 21 7"></polyline>
-											<polyline points="14 7 21 7 21 14"></polyline>
-										</svg>
-									</span>
-								</div>
-								<div class="h1 m-0">7</div>
-								<div class="text-muted mb-4">New Replies</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-sm-6 col-lg-3">
-						<div class="card">
-							<div class="card-body p-2 text-center">
-								<div class="text-right text-red">
-									<span class="text-red d-inline-flex align-items-center lh-1">
-										-2% <svg xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z"></path>
-											<polyline points="3 7 9 13 13 9 21 17"></polyline>
-											<polyline points="21 10 21 17 14 17"></polyline>
-										</svg>
-									</span>
-								</div>
-								<div class="h1 m-0">95</div>
-								<div class="text-muted mb-4">Daily Earnings</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-lg-12">
-						<div class="card">
+					<div class="col-sm-12 col-lg-4">
+						<div class="card" id="stats">
 							<div class="card-header">
-								<h4 class="card-title">Transactions <span id="KtransactionCount" class="badge badge-pill bg-green">7</span></h4>
+								<h4 class="card-title">Channel Stats</h4>
 							</div>
-							<div class="table-responsive">
-								<table id="transactions" class="table table-vcenter card-table">
-									<thead>
-										<tr>
-											<th>#</th>
-											<th>tx_type</th>
-											<th>tx_hash</th>
-											<th>tx_data</th>
-										</tr>
-									</thead>
-								</table>
+							<table class="table card-table table-vcenter">
+								<tbody>
+									<tr>
+										<th>Name</th>
+										<td id="channelName"></td>
+									</tr>
+									<tr>
+										<th>Description</th>
+										<td id="channelDescription"></td>
+									</tr>
+									<tr>
+										<th>Version</th>
+										<td id="channelVersion"></td>
+									</tr>
+									<tr>
+										<th>Contact</th>
+										<td id="channelContact"></td>
+									</tr>
+									<tr>
+										<th>pub_key_string</th>
+										<td id="channelPubKey"></td>
+									</tr>
+									<tr>
+										<th>tx_objects_on_disk</th>
+										<td id="channelTxCount"></td>
+									</tr>
+									<tr>
+										<th>tx_graph_users</th>
+										<td id="channelUsersCount"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="col-sm-12 col-lg-8">
+						<div class="row row-deck row-cards">
+
+							<div class="col-12">
+								<div class="card">
+									<div class="card-body">
+										<img id="demo" src="https://cdn.discordapp.com/attachments/453726546868305962/756006595212738600/unknown.png">
+									</div>
+								</div>
 							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-lg-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">Transactions <span id="KtransactionCount" class="badge badge-pill bg-green">7</span></h4>
+						</div>
+						<div class="table-responsive">
+							<table id=transactions class="table table-vcenter card-table">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>tx_type</th>
+										<th>tx_hash</th>
+									</tr>
+								</thead>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
+
 			<footer class="footer footer-transparent">
 				<div class="container">
 					<div class="row text-center align-items-center flex-row-reverse">
@@ -265,8 +250,5 @@
 	<script src="./dist/js/dark-mode.js"></script>
 	<script>
 		document.body.style.display = "block"
-
 	</script>
-</body>
-
-</html>
+</body></html>
