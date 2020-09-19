@@ -128,6 +128,14 @@ function initTransactionsTable() {
       targets: [0, 1, 2],
       searchable: false
     }, {
+      targets: 0,
+      render: function (data, type, row, meta) {
+        if (type === 'display') {
+          data = moment(data/1000000).format("D/M/YYYY HH:mm");
+        }
+        return data;
+      }
+    }, {
       targets: 1,
       render: function (data, type, row, meta) {
         if (type === 'display') {
@@ -146,8 +154,7 @@ function initTransactionsTable() {
         }
         return data;
       }
-    },
-    {
+    }, {
       targets: 2,
       render: function (data, type, row, meta) {
         if (type === 'display') {
@@ -177,7 +184,7 @@ function updateTransactionsTable(txs) {
   for (var i = 0; i < txs.length; i++) {
     var tx = txs[i];
     transactionsTable.row.add([
-      i+1,
+      tx.time,
       tx.type,
       tx.hash
     ]);
