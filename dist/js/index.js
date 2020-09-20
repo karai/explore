@@ -162,7 +162,7 @@ function initTransactionsTable() {
       render: function (data, type, row, meta) {
         if (type === 'display') {
           const chl = encodeURIComponent(channel.url);
-          data = `<a href="./transaction.html?channel=${chl}&hash=${data}">${data}</a>`
+          data = `<a href="./transaction.html?channel=${chl}&hash=${data}"><span class="transaction-hash">${data}</span></a>`
         }
         return data;
       }

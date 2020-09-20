@@ -137,3 +137,7 @@ a:hover {
 #stats table td {
 	word-break: break-word;
 }
+
+.transaction-hash {
+  word-break: break-word;
+}
