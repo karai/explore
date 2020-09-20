@@ -1,11 +1,11 @@
 const channels = {
   icarus: {
     name: 'Icarus (Unstable)',
-    url: 'http://167.71.104.172:4200'
+    url: 'https://icarus.turtamai.com'
   },
   daedalus: {
     name: 'Daedalus (Stable)',
-    url: 'http://46.101.200.220:4200'
+    url: 'https://daedalus.turtamai.com'
   }
 }
 
