@@ -97,7 +97,7 @@ function fetchTransactions(clear = false) {
   console.log(`refresh data for channel: ${JSON.stringify(channel)}`);
 
   $.ajax({
-    url: `${channel.url}/api/v1/transactions/20`,
+    url: `${channel.url}/api/v1/transactions/30`,
     dataType: 'json',
     type: 'GET',
     cache: 'false',
@@ -167,10 +167,8 @@ function initTransactionsTable() {
         return data;
       }
     }],
-    order: [
-      [0, 'asc']
-    ],
     searching: false,
+    ordering: false,
     info: false,
     paging: false,
     lengthMenu: -1,
@@ -184,12 +182,8 @@ function initTransactionsTable() {
 function updateTransactionsTable(txs) {
   transactionsTable.clear();
 
-  for (var i = 0; i < txs.length; i++) {
-    transactionsTable.row.add([
-      tx.time,
-      tx.type,
-      tx.hash
-    ]);
-  }
+  const rows = txs.map(tx => [tx.time, tx.type, tx.hash]);
+  transactionsTable.rows.add(rows);
+
   transactionsTable.draw(false);
 }
