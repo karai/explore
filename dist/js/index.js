@@ -145,7 +145,10 @@ function initTransactionsTable() {
             case '0':
               badge = 'badge bg-azure'
               break;
-            default:
+            case '1':
+              badge = 'badge bg-indigo'
+              break;
+            case '2':
               badge = 'badge bg-purple'
               break;
           }
@@ -182,7 +185,6 @@ function updateTransactionsTable(txs) {
   transactionsTable.clear();
 
   for (var i = 0; i < txs.length; i++) {
-    var tx = txs[i];
     transactionsTable.row.add([
       tx.time,
       tx.type,
