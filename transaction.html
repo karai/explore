@@ -62,7 +62,7 @@
 				<div class="collapse navbar-collapse" id="navbar-menu">
 					<div class="d-flex flex-column flex-lg-row flex-fill align-items-stretch align-items-lg-center">
 						<ul class="navbar-nav">
-							<li class="nav-item active">
+							<li class="nav-item">
 								<a class="nav-link" href="./index.html">
 									<span class="nav-link-icon d-lg-inline-block">
 										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -79,24 +79,8 @@
 									</span>
 								</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="./charts.html">
-									<span class="nav-link-icon d-lg-inline-block">
-										<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z"></path>
-											<rect x="3" y="12" width="6" height="8" rx="1"></rect>
-											<rect x="9" y="8" width="6" height="12" rx="1"></rect>
-											<rect x="15" y="4" width="6" height="16" rx="1"></rect>
-											<line x1="4" y1="20" x2="18" y2="20"></line>
-										</svg>
-									</span>
-									<span class="nav-link-title">
-										Network Charts
-									</span>
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="./supply.html">
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
 									<span class="nav-link-icon d-lg-inline-block">
 										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 											<path stroke="none" d="M0 0h24v24H0z"></path>
@@ -107,10 +91,14 @@
 											<line x1="9" y1="17" x2="15" y2="17"></line>
 										</svg>
 									</span>
-									<span class="nav-link-title">
-										Currency Supply
+									<span id="chan-select-title" class="nav-link-title">
+										Icarus (Unstable)
 									</span>
 								</a>
+								<div class="dropdown-menu dropdown-menu-arrow">
+									<a id="select-daedalus" href="#" class="dropdown-item ">Daedalus (Stable)</a>
+									<a id="select-icarus" href="#" class="dropdown-item ">Icarus (Unstable)</a>
+								</div>
 							</li>
 						</ul>
 						<div class="ml-lg-auto pl-lg-4 py-2 py-md-0 order-last flex-grow-1 flex-md-grow-1">
@@ -123,7 +111,7 @@
 											<line x1="21" y1="21" x2="15" y2="15"></line>
 										</svg>
 									</span>
-									<input type="text" id="searchValue" class="form-control form-control-dark" placeholder="Search by Block Height / Hash, Transaction Hash, or Payment Id">
+									<input type="text" id="searchValue" class="form-control form-control-dark" placeholder="Search by Transaction Hash">
 								</div>
 							</div>
 						</div>
