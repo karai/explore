@@ -18,6 +18,8 @@ const graph = {
   edges: undefined
 }
 
+const txQueue = [];
+
 $(document).ready(function() {
   initChannelSelector();
   initTransactionsTable();
@@ -50,6 +52,8 @@ $(document).ready(function() {
   var data = graph;
   var options = {};
   var network = new vis.Network(container, data, options);
+
+  setInterval(mutateLoop, 500);
 });
 
 function fetchChannelStats(clear = false) {
@@ -121,7 +125,6 @@ function fetchTransactions(clear = false) {
     cache: 'false',
     success: function (txs) {
       updateTransactionsTable(txs);
-      updateGraph(txs);
     },
     error: function() {
       console.log('error fetching txs!');
@@ -206,22 +209,30 @@ function updateTransactionsTable(txs) {
 
   transactionsTable.draw(false);
 
+  txs.forEach(tx => {
+    if (!allTxs.some(t => t.hash === tx.hash)) {
+      allTxs.push(tx);
+
+      if (!txQueue.some(t => t.hash === tx.hash)) {
+        txQueue.push(tx);
+      }
+    }
+  });
+
+  console.log(`Q length: ${txQueue.length}`)
+
   // const id = Date.now();
 
   // graph.nodes.add({ id: id, label: 'kek' });
   // graph.edges.add({ from: 1, to: id })
 }
 
+function mutateLoop() {
+  updateGraph(txQueue);
+}
+
 function updateGraph(txs) {
-  txs.forEach(tx => {
-    if (!allTxs.some(t => t.hash === tx.hash)) {
-      allTxs.push(tx);
-    }
-  });
-
-  console.log(`all txs: ${allTxs.length}`);
-
-  let items = txs;
+  let items = JSON.parse(JSON.stringify(txs));
 
   while (items.length > 0) {
     let inserted = false;
@@ -255,16 +266,26 @@ function updateGraph(txs) {
           graph.nodes.add({ id: tx.hash, label: 's' });
           graph.edges.add({ from: parentNode.id, to: tx.hash });
 
-          inserted = true;
           items.splice(i, 1);
+          inserted = true;
+
+          const ind = txQueue.findIndex(t => t.hash === tx.hash);
+          txQueue.splice(ind, 1);
+          return;
         }
       }
     }
 
     if (!inserted && items.length > 0) {
       // console.log(`length: ${items.length}`);
-      graph.nodes.add({ id: items[items.length-1].hash, label: 's' });
+      const last = items[items.length-1];
+      graph.nodes.add({ id: last.hash, label: 's' });
       items.pop();
+
+      const ind = txQueue.findIndex(t => t.hash === last.hash);
+      txQueue.splice(ind, 1);
+      inserted = true;
+      return;
     }
   }
 }
