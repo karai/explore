@@ -25,13 +25,21 @@
 		body {
 			display: none;
 		}
-	</style>
+  </style>
+  <style type="text/css">
+    #graph-view {
+      width: 600px;
+      height: 400px;
+      border: 1px solid lightgray;
+    }
+  </style>
 
 	<!-- Demo - needs to be removed  -->
 	<script src="./dist/js/third-party.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js" integrity="sha512-Q1f3TS3vSt1jQ8AwP2OuenztnLU6LwxgyyYOG1jgMW/cbEMHps/3wjvnl1P3WTrF3chJUWEoxDUEjMxDV8pujg==" crossorigin="anonymous"></script>
-	<script src="./dist/js/common.js"></script>
+  <script src="./dist/js/common.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 	<script src="./dist/js/index.js"></script>
 </head>
 
@@ -179,8 +187,9 @@
 							<div class="col-12">
 								<div class="card">
 									<div class="card-body">
-										<img id="demo" src="https://cdn.discordapp.com/attachments/453726546868305962/756006595212738600/unknown.png">
-									</div>
+										<!-- <img id="demo" src="https://cdn.discordapp.com/attachments/453726546868305962/756006595212738600/unknown.png"> -->
+                    <div id="graph-view"></div>
+                  </div>
 								</div>
 							</div>
 
@@ -235,5 +244,35 @@
 	<script src="./dist/js/dark-mode.js"></script>
 	<script>
 		document.body.style.display = "block"
-	</script>
+  </script>
+
+  <!-- <script type="text/javascript">
+    // create an array with nodes
+    var nodes = new vis.DataSet([
+      { id: 1, label: "Node 1" },
+      { id: 2, label: "Node 2" },
+      { id: 3, label: "Node 3" },
+      { id: 4, label: "Node 4" },
+      { id: 5, label: "Node 5" },
+    ]);
+
+    // create an array with edges
+    var edges = new vis.DataSet([
+      { from: 1, to: 3 },
+      { from: 1, to: 2 },
+      { from: 2, to: 4 },
+      { from: 2, to: 5 },
+      { from: 3, to: 3 },
+    ]);
+
+    // create a network
+    var container = document.getElementById("graph-view");
+    var data = {
+      nodes: nodes,
+      edges: edges,
+    };
+    var options = {};
+    var network = new vis.Network(container, data, options);
+  </script> -->
+
 </body></html>
