@@ -61,7 +61,7 @@ $(document).ready(function() {
       barnesHut: {
         theta: 0.5,
         gravitationalConstant: -8000,
-        centralGravity: 0.3,
+        centralGravity: 0.6,
         springLength: 95,
         springConstant: 0.04,
         damping: 0.09,
@@ -181,7 +181,7 @@ function fetchTransactions(clear = false) {
   console.log(`refresh data for channel: ${JSON.stringify(channel)}`);
 
   $.ajax({
-    url: `${channel.url}/api/v1/transactions/500`,
+    url: `${channel.url}/api/v1/transactions/200`,
     dataType: 'json',
     type: 'GET',
     cache: 'false',
