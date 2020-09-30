@@ -302,8 +302,8 @@ function updateGraph(txs) {
       if (existingNode) {
         items.splice(i, 1);
       } else {
-        const gLead = allTxs.find(t => t.lead && t.subg === tx.subg);
-        let parentNode = gLead ? graph.nodes.get(gLead.hash) : undefined;
+        const myLead = allTxs.find(t => t.lead && t.subg === tx.subg);
+        let parentNode = myLead ? graph.nodes.get(myLead.hash) : undefined;
 
         if (tx.lead) {
           const parentTx = allTxs.find(t => t.hash === tx.prev);
@@ -311,28 +311,26 @@ function updateGraph(txs) {
         }
 
         if (parentNode) {
-          graph.nodes.add({ id: tx.hash, label: 's' });
-          graph.edges.add({ from: parentNode.id, to: tx.hash });
-
-          items.splice(i, 1);
-          inserted = true;
-
-          const ind = txQueue.findIndex(t => t.hash === tx.hash);
-          txQueue.splice(ind, 1);
+          addTxNode(tx, parentNode.id);
           return;
         }
       }
     }
 
     if (!inserted && items.length > 0) {
-      const last = items[items.length-1];
-      graph.nodes.add({ id: last.hash, label: 's' });
-      items.pop();
-
-      const ind = txQueue.findIndex(t => t.hash === last.hash);
-      txQueue.splice(ind, 1);
-      inserted = true;
+      addTxNode(items[items.length-1]);
       return;
     }
   }
+}
+
+function addTxNode(transaction, parentId = undefined) {
+  graph.nodes.add({ id: transaction.hash, label: 's' });
+
+  if (parentId) {
+    graph.edges.add({ from: parentId, to: transaction.hash });
+  }
+
+  const index = txQueue.findIndex(t => t.hash === transaction.hash);
+  txQueue.splice(index, 1);
 }
