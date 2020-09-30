@@ -11,7 +11,6 @@ const channels = {
 
 let channel;
 let transactionsTable;
-let allTxs = [];
 let network;
 let lastFitScreen = 0;
 
@@ -20,6 +19,7 @@ const graph = {
   edges: undefined
 }
 
+let allTxs = [];
 const txQueue = [];
 
 $(document).ready(function() {
@@ -109,7 +109,13 @@ $(document).ready(function() {
 
   network.setOptions(options);
 
-  setInterval(updateLoop, 200);
+  // start graph update loop
+  setTimeout(function act() {
+    updateGraph(txQueue);
+
+    const rand = Math.random() * 500
+    setTimeout(act, 50 + rand);
+}, 200);
 });
 
 function fetchChannelStats(clear = false) {
@@ -180,7 +186,7 @@ function fetchTransactions(clear = false) {
     type: 'GET',
     cache: 'false',
     success: function (txs) {
-      updateTransactionsTable(txs);
+      updateTransactionsData(txs);
     },
     error: function() {
       console.log('error fetching txs!');
@@ -257,7 +263,7 @@ function initTransactionsTable() {
   }).columns.adjust().responsive.recalc();
 }
 
-function updateTransactionsTable(txs) {
+function updateTransactionsData(txs) {
   transactionsTable.clear();
 
   const rows = txs.map(tx => [tx.time, tx.type, tx.hash]);
@@ -274,25 +280,12 @@ function updateTransactionsTable(txs) {
       }
     }
   });
-
-  console.log(`Q length: ${txQueue.length}`)
-
-  // const id = Date.now();
-
-  // graph.nodes.add({ id: id, label: 'kek' });
-  // graph.edges.add({ from: 1, to: id })
-}
-
-function updateLoop() {
-  updateGraph(txQueue);
 }
 
 function updateGraph(txs) {
   let items = JSON.parse(JSON.stringify(txs));
   let now = Date.now();
 
-  // animation duration must be less than update interval
-  // network.fit({ animation: { duration: 100 } });
   if (now > lastFitScreen + 4000) {
     network.fit({ animation: { duration: 400 } });
     lastFitScreen = now;
@@ -300,33 +293,24 @@ function updateGraph(txs) {
 
   while (items.length > 0) {
     let inserted = false;
+
     for(let i = items.length - 1; i >= 0; i--) {
       const tx = items[i];
 
-      // const subg = graph.nodes.get(tx.subg);
-
-      // if (!subg) {
-      //   graph.nodes.add({ id: tx.subg, label: 'G' });
-      // }
-
       const existingNode = graph.nodes.get(tx.hash);
-      // console.log(existingNode)
 
       if (existingNode) {
         items.splice(i, 1);
-        // console.log(`existing node: ${existingNode.id}`)
       } else {
         const gLead = allTxs.find(t => t.lead && t.subg === tx.subg);
         let parentNode = gLead ? graph.nodes.get(gLead.hash) : undefined;
 
         if (tx.lead) {
           const parentTx = allTxs.find(t => t.hash === tx.prev);
-          // console.log(parentTx)
           parentNode = parentTx ? graph.nodes.get(parentTx.hash) : undefined;
         }
 
         if (parentNode) {
-          // console.log(parentNode);
           graph.nodes.add({ id: tx.hash, label: 's' });
           graph.edges.add({ from: parentNode.id, to: tx.hash });
 
@@ -341,7 +325,6 @@ function updateGraph(txs) {
     }
 
     if (!inserted && items.length > 0) {
-      // console.log(`length: ${items.length}`);
       const last = items[items.length-1];
       graph.nodes.add({ id: last.hash, label: 's' });
       items.pop();
