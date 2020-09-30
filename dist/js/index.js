@@ -12,6 +12,8 @@ const channels = {
 let channel;
 let transactionsTable;
 let allTxs = [];
+let network;
+let lastFitScreen = 0;
 
 const graph = {
   nodes: undefined,
@@ -50,10 +52,64 @@ $(document).ready(function() {
   // create a network
   var container = document.getElementById("graph-view");
   var data = graph;
-  var options = {};
-  var network = new vis.Network(container, data, options);
 
-  setInterval(mutateLoop, 500);
+  network = new vis.Network(container, data, {});
+
+  var options = {
+    physics:{
+      enabled: true,
+      barnesHut: {
+        theta: 0.5,
+        gravitationalConstant: -8000,
+        centralGravity: 0.3,
+        springLength: 95,
+        springConstant: 0.04,
+        damping: 0.09,
+        avoidOverlap: 0
+      },
+      forceAtlas2Based: {
+        theta: 0.5,
+        gravitationalConstant: -50,
+        centralGravity: 0.01,
+        springConstant: 0.08,
+        springLength: 100,
+        damping: 0.4,
+        avoidOverlap: 0
+      },
+      repulsion: {
+        centralGravity: 0.2,
+        springLength: 200,
+        springConstant: 0.05,
+        nodeDistance: 100,
+        damping: 0.09
+      },
+      hierarchicalRepulsion: {
+        centralGravity: 0.0,
+        springLength: 100,
+        springConstant: 0.01,
+        nodeDistance: 120,
+        damping: 0.09,
+        avoidOverlap: 0
+      },
+      maxVelocity: 50,
+      minVelocity: 0.1,
+      solver: 'barnesHut',
+      stabilization: {
+        enabled: true,
+        iterations: 1000,
+        updateInterval: 100,
+        onlyDynamicEdges: false,
+        fit: true
+      },
+      timestep: 0.5,
+      adaptiveTimestep: true,
+      wind: { x: -0.35, y: 0.32 }
+    }
+  }
+
+  network.setOptions(options);
+
+  setInterval(updateLoop, 200);
 });
 
 function fetchChannelStats(clear = false) {
@@ -119,7 +175,7 @@ function fetchTransactions(clear = false) {
   console.log(`refresh data for channel: ${JSON.stringify(channel)}`);
 
   $.ajax({
-    url: `${channel.url}/api/v1/transactions/200`,
+    url: `${channel.url}/api/v1/transactions/500`,
     dataType: 'json',
     type: 'GET',
     cache: 'false',
@@ -227,12 +283,20 @@ function updateTransactionsTable(txs) {
   // graph.edges.add({ from: 1, to: id })
 }
 
-function mutateLoop() {
+function updateLoop() {
   updateGraph(txQueue);
 }
 
 function updateGraph(txs) {
   let items = JSON.parse(JSON.stringify(txs));
+  let now = Date.now();
+
+  // animation duration must be less than update interval
+  // network.fit({ animation: { duration: 100 } });
+  if (now > lastFitScreen + 4000) {
+    network.fit({ animation: { duration: 400 } });
+    lastFitScreen = now;
+  }
 
   while (items.length > 0) {
     let inserted = false;
