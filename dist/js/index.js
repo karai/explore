@@ -19,7 +19,7 @@ const graph = {
   edges: undefined
 }
 
-let allTxs = [];
+const allTxs = [];
 const txQueue = [];
 
 $(document).ready(function() {
@@ -27,7 +27,8 @@ $(document).ready(function() {
   initTransactionsTable();
 
   switchChannel(channels.icarus);
-  startRefreshTimer(20000);
+  startRefreshDataLoop(20000);
+  startUpdateGraphLoop();
 
   $('#searchValue').keydown(function (e) {
     // setSearchValueErrorState(false);
@@ -43,19 +44,12 @@ $(document).ready(function() {
     }
   });
 
-  // create an array with nodes
   graph.nodes = new vis.DataSet([]);
-
-  // create an array with edges
   graph.edges = new vis.DataSet([]);
 
-  // create a network
-  var container = document.getElementById("graph-view");
-  var data = graph;
+  const container = document.getElementById("graph-view");
 
-  network = new vis.Network(container, data, {});
-
-  var options = {
+  const options = {
     physics:{
       enabled: true,
       barnesHut: {
@@ -107,15 +101,7 @@ $(document).ready(function() {
     }
   }
 
-  network.setOptions(options);
-
-  // start graph update loop
-  setTimeout(function act() {
-    updateGraph(txQueue);
-
-    const rand = Math.random() * 500
-    setTimeout(act, 50 + rand);
-}, 200);
+  network = new vis.Network(container, graph, options);
 });
 
 function fetchChannelStats(clear = false) {
@@ -196,7 +182,7 @@ function fetchTransactions(clear = false) {
   });
 }
 
-function startRefreshTimer(interval) {
+function startRefreshDataLoop(interval) {
   function refreshData() {
     setTimeout(function () {
       fetchTransactions();
@@ -204,6 +190,18 @@ function startRefreshTimer(interval) {
     }, interval)
   }
   refreshData();
+}
+
+function startUpdateGraphLoop() {
+  function update() {
+    const delay = 50 + Math.random() * 500;
+
+    setTimeout(function () {
+      updateGraph(txQueue);
+      update();
+    }, delay)
+  }
+  update();
 }
 
 function initTransactionsTable() {
@@ -283,8 +281,8 @@ function updateTransactionsData(txs) {
 }
 
 function updateGraph(txs) {
-  let items = JSON.parse(JSON.stringify(txs));
-  let now = Date.now();
+  const items = JSON.parse(JSON.stringify(txs));
+  const now = Date.now();
 
   if (now > lastFitScreen + 4000) {
     network.fit({ animation: { duration: 400 } });
