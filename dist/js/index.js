@@ -290,8 +290,6 @@ function updateGraph(txs) {
   }
 
   while (items.length > 0) {
-    let inserted = false;
-
     for(let i = items.length - 1; i >= 0; i--) {
       const tx = items[i];
 
@@ -309,20 +307,20 @@ function updateGraph(txs) {
         }
 
         if (parentNode) {
-          addTxNode(tx, parentNode.id);
+          addNode(tx, parentNode.id);
           return;
         }
       }
     }
 
-    if (!inserted && items.length > 0) {
-      addTxNode(items[items.length-1]);
+    if (items.length > 0) {
+      addNode(items[items.length-1]);
       return;
     }
   }
 }
 
-function addTxNode(transaction, parentId = undefined) {
+function addNode(transaction, parentId = undefined) {
   graph.nodes.add({ id: transaction.hash, label: 's' });
 
   if (parentId) {
