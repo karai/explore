@@ -167,7 +167,7 @@ function fetchTransactions(clear = false) {
   console.log(`refresh data for channel: ${JSON.stringify(channel)}`);
 
   $.ajax({
-    url: `${channel.url}/api/v1/transactions/200`,
+    url: `${channel.url}/api/v1/transactions/250`,
     dataType: 'json',
     type: 'GET',
     cache: 'false',
@@ -297,19 +297,20 @@ function updateGraph(txs) {
 
       if (existingNode) {
         items.splice(i, 1);
-      } else {
-        const myLead = allTxs.find(t => t.lead && t.subg === tx.subg);
-        let parentNode = myLead ? graph.nodes.get(myLead.hash) : undefined;
+        continue;
+      }
 
-        if (tx.lead) {
-          const parentTx = allTxs.find(t => t.hash === tx.prev);
-          parentNode = parentTx ? graph.nodes.get(parentTx.hash) : undefined;
-        }
+      const myLead = allTxs.find(t => t.lead && t.subg === tx.subg);
+      let parentNode = myLead ? graph.nodes.get(myLead.hash) : undefined;
 
-        if (parentNode) {
-          addNode(tx, parentNode.id);
-          return;
-        }
+      if (tx.lead) {
+        const parentTx = allTxs.find(t => t.hash === tx.prev);
+        parentNode = parentTx ? graph.nodes.get(parentTx.hash) : undefined;
+      }
+
+      if (parentNode) {
+        addNode(tx, parentNode.id);
+        return;
       }
     }
 
