@@ -322,7 +322,7 @@ function updateGraph(txs) {
 }
 
 function addNode(transaction, parentId = undefined) {
-  graph.nodes.add({ id: transaction.hash, label: 's' });
+  graph.nodes.add({ id: transaction.hash, label: 's', color: '#43b380', font: {color: '#FFFFFF'}});
 
   if (parentId) {
     graph.edges.add({ from: parentId, to: transaction.hash });
