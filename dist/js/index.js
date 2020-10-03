@@ -11,7 +11,7 @@ const channels = {
 
 const config = {
   txQuerySize: 300,
-  graphMaxSize: 250,
+  graphMaxSize: 280,
   txQueryInterval: 20000,
   fitScreenInterval: 4000
 }
@@ -29,6 +29,7 @@ let channel;
 let transactionsTable;
 let network;
 let lastFitScreen = 0;
+let firstConnectionMade = false;
 
 $(document).ready(function() {
   initChannelSelector();
@@ -161,7 +162,7 @@ function startUpdateGraphLoop() {
 function initTransactionsTable() {
   transactionsTable = $('#transactions').DataTable({
     columnDefs: [{
-      targets: [0, 1, 2],
+      targets: [0, 1, 2, 3],
       searchable: false
     }, {
       targets: 0,
@@ -179,17 +180,17 @@ function initTransactionsTable() {
 
           switch (data) {
             case '0':
-              badge = 'badge bg-azure'
+              badge = 'badge bg-azure';
               break;
             case '1':
-              badge = 'badge bg-indigo'
+              badge = 'badge bg-indigo';
               break;
             case '2':
-              badge = 'badge bg-purple'
+              badge = 'badge bg-purple';
               break;
           }
 
-          data = `<span class="${badge}">${data}</span>`
+          data = `<span class="${badge}">${data}</span>`;
         }
         return data;
       }
@@ -198,7 +199,15 @@ function initTransactionsTable() {
       render: function (data, type, row, meta) {
         if (type === 'display') {
           const chl = encodeURIComponent(channel.url);
-          data = `<a href="./transaction.html?channel=${chl}&hash=${data}"><span class="transaction-hash">${data}</span></a>`
+          data = `<a href="./transaction.html?channel=${chl}&hash=${data}"><span class="transaction-hash">${getHashSegments(data)}</span></a>`;
+        }
+        return data;
+      }
+    }, {
+      targets: 3,
+      render: function (data, type, row, meta) {
+        if (type === 'display') {
+          data = `<span class="d-none d-lg-block">${data}</span>`;
         }
         return data;
       }
@@ -215,10 +224,29 @@ function initTransactionsTable() {
   }).columns.adjust().responsive.recalc();
 }
 
+function getHashSegments(hash) {
+  let result = `<span>${hash.substring(0, 2)}</span>`;
+  let offset = 2;
+
+  while (offset < hash.length - 10) {
+    result += getHashPixel(hash, offset);
+    offset += 6;
+  }
+
+  result += `<span>${hash.slice(-2)}</span>`;
+
+  return result;
+}
+
+function getHashPixel(hash, offset) {
+  const color = `#${hash.substring(offset, offset + 6)}`;
+  return `<span style="color: transparent; background-color: ${color}">X</span>`;
+}
+
 function updateTransactionsData(txs) {
   transactionsTable.clear();
 
-  const rows = txs.map(tx => [tx.time, tx.type, tx.hash]);
+  const rows = txs.map(tx => [tx.time, tx.type, tx.hash, tx.data]);
   transactionsTable.rows.add(rows);
 
   transactionsTable.draw(false);
@@ -285,6 +313,11 @@ function addNode(transaction, parentId = undefined) {
 
   if (parentId) {
     graph.edges.add({ from: parentId, to: transaction.hash });
+
+    if (!firstConnectionMade) {
+      firstConnectionMade = true;
+      pruneOrphans();
+    }
   }
 
   const index = txQueue.findIndex(t => t.hash === transaction.hash);
@@ -312,6 +345,19 @@ function pruneGraph() {
       graph.nodes.remove(node);
     }
   });
+}
+
+function pruneOrphans() {
+  for (let i = graphHistory.length - 1; i >= 0; i--) {
+    const candidate = graphHistory[i];
+    const connections = network.getConnectedNodes(candidate.id);
+
+    if (connections.length === 0) {
+      const orphan = graphHistory.find(n => n.id === candidate.id);
+      graphHistory.splice(graphHistory.indexOf(orphan), 1);
+      graph.nodes.remove(candidate.id);
+    }
+  }
 }
 
 function getGraphOptions() {
