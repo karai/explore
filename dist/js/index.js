@@ -198,7 +198,7 @@ function initTransactionsTable() {
       render: function (data, type, row, meta) {
         if (type === 'display') {
           const chl = encodeURIComponent(channel.url);
-          data = `<a href="./transaction.html?channel=${chl}&hash=${data}"><span class="transaction-hash">${data}</span></a>`
+          data = `<a href="./transaction.html?channel=${chl}&hash=${data}"><span class="transaction-hash">${getHashSegments(data)}</span></a>`
         }
         return data;
       }
@@ -213,6 +213,25 @@ function initTransactionsTable() {
     },
     autoWidth: false
   }).columns.adjust().responsive.recalc();
+}
+
+function getHashSegments(hash) {
+  let result = `<span>${hash.substring(0, 2)}</span>`;
+  let offset = 2;
+
+  while (offset < hash.length - 10) {
+    result += getHashPixel(hash, offset);
+    offset += 6;
+  }
+
+  result += `<span>${hash.slice(-2)}</span>`;
+
+  return result;
+}
+
+function getHashPixel(hash, offset) {
+  const color = `#${hash.substring(offset, offset + 6)}`;
+  return `<span style="color: transparent; background-color: ${color}">X</span>`;
 }
 
 function updateTransactionsData(txs) {
