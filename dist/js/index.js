@@ -9,10 +9,7 @@ const channels = {
   }
 }
 
-let channel;
-let transactionsTable;
-let network;
-let lastFitScreen = 0;
+const txQuerySize = 250;
 
 const graph = {
   nodes: undefined,
@@ -21,6 +18,11 @@ const graph = {
 
 const allTxs = [];
 const txQueue = [];
+
+let channel;
+let transactionsTable;
+let network;
+let lastFitScreen = 0;
 
 $(document).ready(function() {
   initChannelSelector();
@@ -48,60 +50,7 @@ $(document).ready(function() {
   graph.edges = new vis.DataSet([]);
 
   const container = document.getElementById("graph-view");
-
-  const options = {
-    physics:{
-      enabled: true,
-      barnesHut: {
-        theta: 0.5,
-        gravitationalConstant: -8000,
-        centralGravity: 0.6,
-        springLength: 95,
-        springConstant: 0.04,
-        damping: 0.09,
-        avoidOverlap: 0
-      },
-      forceAtlas2Based: {
-        theta: 0.5,
-        gravitationalConstant: -50,
-        centralGravity: 0.01,
-        springConstant: 0.08,
-        springLength: 100,
-        damping: 0.4,
-        avoidOverlap: 0
-      },
-      repulsion: {
-        centralGravity: 0.2,
-        springLength: 200,
-        springConstant: 0.05,
-        nodeDistance: 100,
-        damping: 0.09
-      },
-      hierarchicalRepulsion: {
-        centralGravity: 0.0,
-        springLength: 100,
-        springConstant: 0.01,
-        nodeDistance: 120,
-        damping: 0.09,
-        avoidOverlap: 0
-      },
-      maxVelocity: 50,
-      minVelocity: 0.1,
-      solver: 'barnesHut',
-      stabilization: {
-        enabled: true,
-        iterations: 1000,
-        updateInterval: 100,
-        onlyDynamicEdges: false,
-        fit: true
-      },
-      timestep: 0.5,
-      adaptiveTimestep: true,
-      wind: { x: -0.35, y: 0.32 }
-    }
-  }
-
-  network = new vis.Network(container, graph, options);
+  network = new vis.Network(container, graph, getGraphOptions());
 });
 
 function fetchChannelStats(clear = false) {
@@ -164,10 +113,8 @@ function fetchTransactions(clear = false) {
     transactionsTable.draw(false);
   }
 
-  console.log(`refresh data for channel: ${JSON.stringify(channel)}`);
-
   $.ajax({
-    url: `${channel.url}/api/v1/transactions/250`,
+    url: `${channel.url}/api/v1/transactions/${txQuerySize}`,
     dataType: 'json',
     type: 'GET',
     cache: 'false',
@@ -334,4 +281,96 @@ function addNode(transaction, parentId = undefined) {
 
   const index = txQueue.findIndex(t => t.hash === transaction.hash);
   txQueue.splice(index, 1);
+}
+
+function getGraphOptions() {
+  return {
+    interaction:{
+      dragNodes:false,
+      dragView: false,
+      hideEdgesOnDrag: false,
+      hideEdgesOnZoom: false,
+      hideNodesOnDrag: false,
+      hover: false,
+      hoverConnectedEdges: true,
+      keyboard: {
+        enabled: false,
+        speed: {x: 10, y: 10, zoom: 0.02},
+        bindToWindow: true
+      },
+      multiselect: false,
+      navigationButtons: false,
+      selectable: true,
+      selectConnectedEdges: true,
+      tooltipDelay: 300,
+      zoomSpeed: 1,
+      zoomView: false
+    },
+    layout: {
+      randomSeed: undefined,
+      improvedLayout:true,
+      clusterThreshold: 150,
+      hierarchical: {
+        enabled:false,
+        levelSeparation: 150,
+        nodeSpacing: 100,
+        treeSpacing: 200,
+        blockShifting: true,
+        edgeMinimization: true,
+        parentCentralization: true,
+        direction: 'UD',        // UD, DU, LR, RL
+        sortMethod: 'hubsize',  // hubsize, directed
+        shakeTowards: 'leaves'  // roots, leaves
+      }
+    },
+    physics:{
+      enabled: true,
+      barnesHut: {
+        theta: 0.5,
+        gravitationalConstant: -8000,
+        centralGravity: 0.6,
+        springLength: 95,
+        springConstant: 0.04,
+        damping: 0.09,
+        avoidOverlap: 0
+      },
+      forceAtlas2Based: {
+        theta: 0.5,
+        gravitationalConstant: -50,
+        centralGravity: 0.01,
+        springConstant: 0.08,
+        springLength: 100,
+        damping: 0.4,
+        avoidOverlap: 0
+      },
+      repulsion: {
+        centralGravity: 0.2,
+        springLength: 200,
+        springConstant: 0.05,
+        nodeDistance: 100,
+        damping: 0.09
+      },
+      hierarchicalRepulsion: {
+        centralGravity: 0.0,
+        springLength: 100,
+        springConstant: 0.01,
+        nodeDistance: 120,
+        damping: 0.09,
+        avoidOverlap: 0
+      },
+      maxVelocity: 50,
+      minVelocity: 0.1,
+      solver: 'barnesHut',
+      stabilization: {
+        enabled: true,
+        iterations: 1000,
+        updateInterval: 100,
+        onlyDynamicEdges: false,
+        fit: true
+      },
+      timestep: 0.5,
+      adaptiveTimestep: true,
+      wind: { x: -0.35, y: 0.32 }
+    }
+  }
 }
