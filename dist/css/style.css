@@ -140,8 +140,9 @@ a:hover {
 
 .transaction-hash {
   word-break: break-word;
+  font-family: monospace;
 }
 
 .vis-network:focus {
-    outline: none;
+  outline: none;
 }
