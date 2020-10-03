@@ -141,3 +141,7 @@ a:hover {
 .transaction-hash {
   word-break: break-word;
 }
+
+.vis-network:focus {
+    outline: none;
+}
