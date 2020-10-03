@@ -9,7 +9,12 @@ const channels = {
   }
 }
 
-const txQuerySize = 250;
+const config = {
+  txQuerySize: 300,
+  graphMaxSize: 250,
+  txQueryInterval: 20000,
+  fitScreenInterval: 4000
+}
 
 const graph = {
   nodes: undefined,
@@ -18,6 +23,7 @@ const graph = {
 
 const allTxs = [];
 const txQueue = [];
+const graphHistory = [];
 
 let channel;
 let transactionsTable;
@@ -29,7 +35,7 @@ $(document).ready(function() {
   initTransactionsTable();
 
   switchChannel(channels.icarus);
-  startRefreshDataLoop(20000);
+  startRefreshDataLoop(config.txQueryInterval);
   startUpdateGraphLoop();
 
   $('#searchValue').keydown(function (e) {
@@ -114,7 +120,7 @@ function fetchTransactions(clear = false) {
   }
 
   $.ajax({
-    url: `${channel.url}/api/v1/transactions/${txQuerySize}`,
+    url: `${channel.url}/api/v1/transactions/${config.txQuerySize}`,
     dataType: 'json',
     type: 'GET',
     cache: 'false',
@@ -145,6 +151,7 @@ function startUpdateGraphLoop() {
 
     setTimeout(function () {
       updateGraph(txQueue);
+      pruneGraph();
       update();
     }, delay)
   }
@@ -235,8 +242,8 @@ function updateGraph(txs) {
   const items = JSON.parse(JSON.stringify(txs));
   const now = Date.now();
 
-  if (now > lastFitScreen + 4000) {
-    network.fit({ animation: { duration: 400 } });
+  if (now > lastFitScreen + config.fitScreenInterval) {
+    network.fit({ animation: { duration: 800 } });
     lastFitScreen = now;
   }
 
@@ -274,6 +281,7 @@ function updateGraph(txs) {
 
 function addNode(transaction, parentId = undefined) {
   graph.nodes.add({ id: transaction.hash, color: '#43b380', font: {color: '#ffffff'}});
+  graphHistory.push({ id: transaction.hash, lead: transaction.lead });
 
   if (parentId) {
     graph.edges.add({ from: parentId, to: transaction.hash });
@@ -281,6 +289,29 @@ function addNode(transaction, parentId = undefined) {
 
   const index = txQueue.findIndex(t => t.hash === transaction.hash);
   txQueue.splice(index, 1);
+}
+
+function pruneGraph() {
+  if (graphHistory.length <= config.graphMaxSize) {
+    return;
+  }
+
+  const candidates = graphHistory.slice(0, 50);
+  const selected = candidates.find(c => !c.lead);
+  const connectedNodes = network.getConnectedNodes(selected.id);
+
+  graphHistory.splice(graphHistory.indexOf(selected), 1);
+  graph.nodes.remove(selected.id);
+
+  connectedNodes.forEach(node => {
+    const connections = network.getConnectedNodes(node);
+
+    if (connections.length === 0) {
+      const orphan = graphHistory.find(n => n.id === node.id);
+      graphHistory.splice(graphHistory.indexOf(orphan), 1);
+      graph.nodes.remove(node);
+    }
+  });
 }
 
 function getGraphOptions() {
