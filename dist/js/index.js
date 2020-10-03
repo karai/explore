@@ -281,6 +281,10 @@ function updateTransactionsData(txs) {
 }
 
 function updateGraph(txs) {
+  if (document.visibilityState !== 'visible') {
+    return;
+  }
+
   const items = JSON.parse(JSON.stringify(txs));
   const now = Date.now();
 
@@ -322,7 +326,7 @@ function updateGraph(txs) {
 }
 
 function addNode(transaction, parentId = undefined) {
-  graph.nodes.add({ id: transaction.hash, label: 's', color: '#43b380', font: {color: '#FFFFFF'}});
+  graph.nodes.add({ id: transaction.hash, color: '#43b380', font: {color: '#ffffff'}});
 
   if (parentId) {
     graph.edges.add({ from: parentId, to: transaction.hash });
