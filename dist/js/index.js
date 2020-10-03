@@ -161,7 +161,7 @@ function startUpdateGraphLoop() {
 function initTransactionsTable() {
   transactionsTable = $('#transactions').DataTable({
     columnDefs: [{
-      targets: [0, 1, 2],
+      targets: [0, 1, 2, 3],
       searchable: false
     }, {
       targets: 0,
@@ -179,17 +179,17 @@ function initTransactionsTable() {
 
           switch (data) {
             case '0':
-              badge = 'badge bg-azure'
+              badge = 'badge bg-azure';
               break;
             case '1':
-              badge = 'badge bg-indigo'
+              badge = 'badge bg-indigo';
               break;
             case '2':
-              badge = 'badge bg-purple'
+              badge = 'badge bg-purple';
               break;
           }
 
-          data = `<span class="${badge}">${data}</span>`
+          data = `<span class="${badge}">${data}</span>`;
         }
         return data;
       }
@@ -198,7 +198,15 @@ function initTransactionsTable() {
       render: function (data, type, row, meta) {
         if (type === 'display') {
           const chl = encodeURIComponent(channel.url);
-          data = `<a href="./transaction.html?channel=${chl}&hash=${data}"><span class="transaction-hash">${getHashSegments(data)}</span></a>`
+          data = `<a href="./transaction.html?channel=${chl}&hash=${data}"><span class="transaction-hash">${getHashSegments(data)}</span></a>`;
+        }
+        return data;
+      }
+    }, {
+      targets: 3,
+      render: function (data, type, row, meta) {
+        if (type === 'display') {
+          data = `<span class="d-none d-lg-block">${data}</span>`;
         }
         return data;
       }
@@ -237,7 +245,7 @@ function getHashPixel(hash, offset) {
 function updateTransactionsData(txs) {
   transactionsTable.clear();
 
-  const rows = txs.map(tx => [tx.time, tx.type, tx.hash]);
+  const rows = txs.map(tx => [tx.time, tx.type, tx.hash, tx.data]);
   transactionsTable.rows.add(rows);
 
   transactionsTable.draw(false);
