@@ -11,7 +11,7 @@ const channels = {
 
 const config = {
   txQuerySize: 300,
-  graphMaxSize: 250,
+  graphMaxSize: 280,
   txQueryInterval: 20000,
   fitScreenInterval: 4000
 }
@@ -29,6 +29,7 @@ let channel;
 let transactionsTable;
 let network;
 let lastFitScreen = 0;
+let firstConnectionMade = false;
 
 $(document).ready(function() {
   initChannelSelector();
@@ -312,6 +313,11 @@ function addNode(transaction, parentId = undefined) {
 
   if (parentId) {
     graph.edges.add({ from: parentId, to: transaction.hash });
+
+    if (!firstConnectionMade) {
+      firstConnectionMade = true;
+      pruneOrphans();
+    }
   }
 
   const index = txQueue.findIndex(t => t.hash === transaction.hash);
@@ -339,6 +345,19 @@ function pruneGraph() {
       graph.nodes.remove(node);
     }
   });
+}
+
+function pruneOrphans() {
+  for (let i = graphHistory.length - 1; i >= 0; i--) {
+    const candidate = graphHistory[i];
+    const connections = network.getConnectedNodes(candidate.id);
+
+    if (connections.length === 0) {
+      const orphan = graphHistory.find(n => n.id === candidate.id);
+      graphHistory.splice(graphHistory.indexOf(orphan), 1);
+      graph.nodes.remove(candidate.id);
+    }
+  }
 }
 
 function getGraphOptions() {
