@@ -140,6 +140,10 @@ a:hover {
 
 .transaction-hash {
   word-break: break-word;
+}
+
+.transaction-hash,
+#Ktransaction {
   font-family: monospace;
 }
 
