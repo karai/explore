@@ -207,9 +207,10 @@ function initTransactionsTable() {
       }
     }, {
       targets: 3,
+      width: '100px',
       render: function (data, type, row, meta) {
         if (type === 'display') {
-          data = `<span class="d-none d-lg-block">${getTxDataText(data, row[2])}</span>`;
+          data = `<span>${getTxDataText(data, row[2])}</span>`;
         }
         return data;
       }
