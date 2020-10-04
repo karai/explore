@@ -145,6 +145,7 @@ a:hover {
 .transaction-hash,
 #Ktransaction {
   font-family: monospace;
+  font-size: 0.9rem;
 }
 
 .vis-network:focus {
