@@ -243,5 +243,10 @@
 	<script src="./dist/js/dark-mode.js"></script>
 	<script>
 		document.body.style.display = "block"
-  </script>
+	</script>
+	<script>
+		$(document).ready(function() {
+		$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+		});
+    </script>
 </body></html>
