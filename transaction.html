@@ -31,6 +31,7 @@
 	<!-- Demo - needs to be removed  -->
   <script src="./dist/js/third-party.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js" integrity="sha512-Q1f3TS3vSt1jQ8AwP2OuenztnLU6LwxgyyYOG1jgMW/cbEMHps/3wjvnl1P3WTrF3chJUWEoxDUEjMxDV8pujg==" crossorigin="anonymous"></script>
   <script src="./dist/js/common.js"></script>
   <script src="./dist/js/transaction.js"></script>
 </head>
@@ -143,28 +144,28 @@
 									<tbody>
 										<tr>
 											<th>TX Type</th>
-											<td id="blockHeight"><span class="badge bg-purple">2</span></td>
-											<th>TX Hash</th>
-											<td id="blockDepth">0</td>
+											<td id="type"></td>
+											<th>Previous TX</th>
+											<td id="previous"></td>
 										</tr>
 										<tr>
-											<th>Size</th>
-											<td id="blockSize">530 bytes</td>
+											<th>Lead</th>
+											<td id="lead"></td>
 											<th>Date &amp; Time</th>
-											<td id="blockTimestamp">Sat, 05 Sep 2020 07:44:06 GMT</td>
+											<td id="timestamp"></td>
 										</tr>
 										<tr>
-											<th>Version</th>
-											<td id="blockVersion">6.0</td>
-											<th>Transactions Size</th>
-											<td id="blockTransactionSize">411 bytes</td>
+											<th>Milestone</th>
+											<td id="milestone"></td>
+											<th>Epoch</th>
+											<td id="epoch"></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 							<div class="card-footer text-break">
 								<div class="mb-0">
-									<span class="strong">Prev. TX:</span> <a href="#" id="Ktransaction">017dc5443ca98a8413b3ee979dba88cc63ca1758a38205d94bc5dd6a87f93333f9aa8a8f825de46428025057063fce62227282f2d212761a80dcbad934c3d06c</a>
+									<span class="strong">Data:</span><span id="data"></span>
 								</div>
 							</div>
 						</div>
