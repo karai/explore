@@ -168,6 +168,7 @@ function initTransactionsTable() {
       searchable: false
     }, {
       targets: 0,
+      width: '15%',
       render: function (data, type, row, meta) {
         if (type === 'display') {
           data = moment(data/1000000).format("D/M/YYYY HH:mm");
@@ -176,6 +177,7 @@ function initTransactionsTable() {
       }
     }, {
       targets: 1,
+      width: '7%',
       render: function (data, type, row, meta) {
         if (type === 'display') {
           let badge;
