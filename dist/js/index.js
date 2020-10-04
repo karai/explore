@@ -209,7 +209,7 @@ function initTransactionsTable() {
       targets: 3,
       render: function (data, type, row, meta) {
         if (type === 'display') {
-          data = `<span class="d-none d-lg-block">${data}</span>`;
+          data = `<span class="d-none d-lg-block">${getTxDataText(data, row[2])}</span>`;
         }
         return data;
       }
@@ -341,6 +341,18 @@ function pruneOrphans() {
       graph.nodes.remove(candidate.id);
     }
   }
+}
+
+function getTxDataText(data, hash) {
+  const json = JSON.parse(data);
+  let text = 'TEXT';
+
+  if (json && json instanceof Object) {
+    text = `JSON`;
+  }
+
+  const chl = encodeURIComponent(channel.url);
+  return `<a href="./transaction.html?channel=${chl}&hash=${hash}"<span class="transaction-hash">${text}</span></a>`;
 }
 
 function getGraphOptions() {
