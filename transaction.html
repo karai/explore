@@ -1,206 +1,433 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, viewport-fit=cover"
+		/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Karai Explorer</title>
+		<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+		<meta name="msapplication-TileColor" content="#43b380" />
+		<meta name="theme-color" content="#43b380" />
+		<meta
+			name="apple-mobile-web-app-status-bar-style"
+			content="black-translucent"
+		/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="shortcut icon" href="./dist/ico/favicon.ico" />
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="./dist/ico/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="./dist/ico/favicon-16x16.png"
+		/>
+		<link rel="manifest" href="./dist/ico/site.webmanifest" />
+		<link
+			rel="mask-icon"
+			href="./dist/ico/safari-pinned-tab.svg"
+			color="#43b380"
+		/>
+		<link href="./dist/css/tabler.min.css" rel="stylesheet" />
+		<link href="./dist/css/style.css" rel="stylesheet" />
+		<style>
+			body {
+				display: none;
+			}
+		</style>
 
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-	<title>Karai Explorer</title>
-	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-	<meta name="msapplication-TileColor" content="#43b380" />
-	<meta name="theme-color" content="#43b380" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="mobile-web-app-capable" content="yes" />
-	<meta name="HandheldFriendly" content="True" />
-	<meta name="MobileOptimized" content="320" />
-	<link rel="shortcut icon" href="./dist/ico/favicon.ico">
-	<link rel="icon" type="image/png" sizes="32x32" href="./dist/ico/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="./dist/ico/favicon-16x16.png">
-	<link rel="manifest" href="./dist/ico/site.webmanifest">
-	<link rel="mask-icon" href="./dist/ico/safari-pinned-tab.svg" color="#43b380">
-	<link href="./dist/css/tabler.min.css" rel="stylesheet" />
-	<link href="./dist/css/style.css" rel="stylesheet" />
-	<style>
-		body {
-			display: none;
-		}
+		<!-- Demo - needs to be removed  -->
+		<script src="./dist/js/third-party.js"></script>
 
-	</style>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js"
+			integrity="sha512-Q1f3TS3vSt1jQ8AwP2OuenztnLU6LwxgyyYOG1jgMW/cbEMHps/3wjvnl1P3WTrF3chJUWEoxDUEjMxDV8pujg=="
+			crossorigin="anonymous"
+		></script>
+		<script src="./dist/js/common.js"></script>
+		<script src="./dist/js/transaction.js"></script>
+	</head>
 
-	<!-- Demo - needs to be removed  -->
-  <script src="./dist/js/third-party.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js" integrity="sha512-Q1f3TS3vSt1jQ8AwP2OuenztnLU6LwxgyyYOG1jgMW/cbEMHps/3wjvnl1P3WTrF3chJUWEoxDUEjMxDV8pujg==" crossorigin="anonymous"></script>
-  <script src="./dist/js/common.js"></script>
-  <script src="./dist/js/transaction.js"></script>
-</head>
-
-<body class="antialiased">
-	<div class="page">
-		<header class="navbar navbar-expand-lg navbar-dark navbar-overlap">
-			<div class="container-xl">
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<a href="./index.html" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
-					<img src="./dist/img/turtlecoin-logo.svg" alt="Tabler" class="navbar-brand-image">
-				</a>
-				<div class="navbar-nav flex-row order-md-last">
-					<div class="nav-item d-md-flex">
-						<a href="#" class="nav-link px-0 mode-toggle">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-								<path stroke="none" d="M0 0h24v24H0z"></path>
-								<circle cx="12" cy="12" r="9"></circle>
-								<line x1="12" y1="3" x2="12" y2="21"></line>
-								<path d="M12 9l4.65 -4.65"></path>
-								<path d="M12 14.3l7.37 -7.37"></path>
-								<path d="M12 19.6l8.85 -8.85"></path>
-							</svg>
-						</a>
-					</div>
-				</div>
-				<div class="collapse navbar-collapse" id="navbar-menu">
-					<div class="d-flex flex-column flex-lg-row flex-fill align-items-stretch align-items-lg-center">
-						<ul class="navbar-nav">
-							<li class="nav-item">
-								<a class="nav-link" href="./index.html">
-									<span class="nav-link-icon d-lg-inline-block">
-										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z"></path>
-											<polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3"></polyline>
-											<line x1="12" y1="12" x2="20" y2="7.5"></line>
-											<line x1="12" y1="12" x2="12" y2="21"></line>
-											<line x1="12" y1="12" x2="4" y2="7.5"></line>
-											<line x1="16" y1="5.25" x2="8" y2="9.75"></line>
-										</svg>
-									</span>
-									<span class="nav-link-title">
-										Explorer
-									</span>
-								</a>
-							</li>
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-									<span class="nav-link-icon d-lg-inline-block">
-										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z"></path>
-											<polyline points="14 3 14 8 19 8"></polyline>
-											<path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-											<line x1="9" y1="9" x2="10" y2="9"></line>
-											<line x1="9" y1="13" x2="15" y2="13"></line>
-											<line x1="9" y1="17" x2="15" y2="17"></line>
-										</svg>
-									</span>
-									<span id="chan-select-title" class="nav-link-title">
-										Icarus (Unstable)
-									</span>
-								</a>
-								<div class="dropdown-menu dropdown-menu-arrow">
-									<a id="select-daedalus" href="#" class="dropdown-item ">Daedalus (Stable)</a>
-									<a id="select-icarus" href="#" class="dropdown-item ">Icarus (Unstable)</a>
-								</div>
-							</li>
-						</ul>
-						<div class="ml-lg-auto pl-lg-4 py-2 py-md-0 order-last flex-grow-1 flex-md-grow-1">
-							<div>
-								<div class="input-icon">
-									<span class="input-icon-addon">
-										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z"></path>
-											<circle cx="10" cy="10" r="7"></circle>
-											<line x1="21" y1="21" x2="15" y2="15"></line>
-										</svg>
-									</span>
-									<input type="text" id="searchValue" class="form-control form-control-dark" placeholder="Search by Transaction Hash">
-								</div>
-							</div>
+	<body class="antialiased">
+		<div class="page">
+			<header class="navbar navbar-expand-lg navbar-dark navbar-overlap">
+				<div class="container-xl">
+					<button
+						class="navbar-toggler"
+						type="button"
+						data-toggle="collapse"
+						data-target="#navbar-menu"
+					>
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<a
+						href="./index.html"
+						class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3"
+					>
+						<img
+							src="./dist/img/turtlecoin-logo.svg"
+							alt="Tabler"
+							class="navbar-brand-image"
+						/>
+					</a>
+					<div class="navbar-nav flex-row order-md-last">
+						<div class="nav-item d-md-flex">
+							<a href="#" class="nav-link px-0 mode-toggle">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="icon icon-md"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									stroke-width="2"
+									stroke="currentColor"
+									fill="none"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										stroke="none"
+										d="M0 0h24v24H0z"
+									></path>
+									<circle cx="12" cy="12" r="9"></circle>
+									<line x1="12" y1="3" x2="12" y2="21"></line>
+									<path d="M12 9l4.65 -4.65"></path>
+									<path d="M12 14.3l7.37 -7.37"></path>
+									<path d="M12 19.6l8.85 -8.85"></path>
+								</svg>
+							</a>
 						</div>
 					</div>
-				</div>
-			</div>
-		</header>
-		<div class="content">
-			<div class="container-xl">
-				<!-- Page title -->
-				<div class="page-header text-white">
-					<div class="row align-items-center">
-						<div class="col-auto">
-							<h2 class="page-title">
-								Transaction Details
-							</h2>
-						</div>
-					</div>
-				</div>
-
-				<div class="row row-deck row-cards">
-					<div class="col-lg-12">
-						<div class="card">
-							<div class="card-header text-break">
-								<h4 class="card-title"><span id="Ktransaction"></span></h4>
-							</div>
-							<div class="table-responsive">
-								<table class="table card-table text-nowrap table-vcenter">
-									<tbody>
-										<tr>
-											<th>TX Type</th>
-											<td id="type"></td>
-											<th>Previous TX</th>
-											<td id="previous"></td>
-										</tr>
-										<tr>
-											<th>Lead</th>
-											<td id="lead"></td>
-											<th>Date &amp; Time</th>
-											<td id="timestamp"></td>
-										</tr>
-										<tr>
-											<th>Milestone</th>
-											<td id="milestone"></td>
-											<th>Epoch</th>
-											<td id="epoch"></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="card-footer text-break">
-								<div class="mb-0">
-									<span class="strong">Data: </span><span id="data"></span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-			</div>
-			<footer class="footer footer-transparent">
-				<div class="container">
-					<div class="row text-center align-items-center flex-row-reverse">
-						<div class="col-lg-auto ml-lg-auto">
-							<ul class="list-inline list-inline-dots mb-0">
-								<li class="list-inline-item"><a href="https://github.com/karai/explore" target="_blank" class="link-secondary">Source code</a></li>
+					<div class="collapse navbar-collapse" id="navbar-menu">
+						<div
+							class="d-flex flex-column flex-lg-row flex-fill align-items-stretch align-items-lg-center"
+						>
+							<ul class="navbar-nav">
+								<li class="nav-item">
+									<a class="nav-link" href="./index.html">
+										<span
+											class="nav-link-icon d-lg-inline-block"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												class="icon"
+												width="24"
+												height="24"
+												viewBox="0 0 24 24"
+												stroke-width="2"
+												stroke="currentColor"
+												fill="none"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											>
+												<path
+													stroke="none"
+													d="M0 0h24v24H0z"
+												></path>
+												<polyline
+													points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3"
+												></polyline>
+												<line
+													x1="12"
+													y1="12"
+													x2="20"
+													y2="7.5"
+												></line>
+												<line
+													x1="12"
+													y1="12"
+													x2="12"
+													y2="21"
+												></line>
+												<line
+													x1="12"
+													y1="12"
+													x2="4"
+													y2="7.5"
+												></line>
+												<line
+													x1="16"
+													y1="5.25"
+													x2="8"
+													y2="9.75"
+												></line>
+											</svg>
+										</span>
+										<span class="nav-link-title">
+											Explorer
+										</span>
+									</a>
+								</li>
+								<li class="nav-item dropdown">
+									<a
+										class="nav-link dropdown-toggle"
+										href="#"
+										data-toggle="dropdown"
+									>
+										<span
+											class="nav-link-icon d-lg-inline-block"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												class="icon"
+												width="24"
+												height="24"
+												viewBox="0 0 24 24"
+												stroke-width="2"
+												stroke="currentColor"
+												fill="none"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											>
+												<path
+													stroke="none"
+													d="M0 0h24v24H0z"
+												></path>
+												<polyline
+													points="14 3 14 8 19 8"
+												></polyline>
+												<path
+													d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
+												></path>
+												<line
+													x1="9"
+													y1="9"
+													x2="10"
+													y2="9"
+												></line>
+												<line
+													x1="9"
+													y1="13"
+													x2="15"
+													y2="13"
+												></line>
+												<line
+													x1="9"
+													y1="17"
+													x2="15"
+													y2="17"
+												></line>
+											</svg>
+										</span>
+										<span
+											id="chan-select-title"
+											class="nav-link-title"
+										>
+											Icarus (Unstable)
+										</span>
+									</a>
+									<div
+										class="dropdown-menu dropdown-menu-arrow"
+									>
+										<a
+											id="select-daedalus"
+											href="#"
+											class="dropdown-item"
+											>Daedalus (Stable)</a
+										>
+										<a
+											id="select-icarus"
+											href="#"
+											class="dropdown-item"
+											>Icarus (Unstable)</a
+										>
+									</div>
+								</li>
 							</ul>
-						</div>
-						<div class="col-12 col-lg-auto mt-3 mt-lg-0">
-							Copyright © 2020 Powerd By
-							<a href="https://turtlecoin.lol/" target="_blank" class="link-secondary">TurtleCoin®</a>.
-							The source code is licensed under AGPL-3.0.
+							<div
+								class="ml-lg-auto pl-lg-4 py-2 py-md-0 order-last flex-grow-1 flex-md-grow-1"
+							>
+								<div>
+									<div class="input-icon">
+										<span class="input-icon-addon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												class="icon"
+												width="24"
+												height="24"
+												viewBox="0 0 24 24"
+												stroke-width="2"
+												stroke="currentColor"
+												fill="none"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											>
+												<path
+													stroke="none"
+													d="M0 0h24v24H0z"
+												></path>
+												<circle
+													cx="10"
+													cy="10"
+													r="7"
+												></circle>
+												<line
+													x1="21"
+													y1="21"
+													x2="15"
+													y2="15"
+												></line>
+											</svg>
+										</span>
+										<input
+											type="text"
+											id="searchValue"
+											class="form-control form-control-dark"
+											placeholder="Search by Transaction Hash"
+										/>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</footer>
+			</header>
+			<div class="content">
+				<div class="container-xl">
+					<!-- Page title -->
+					<div class="page-header text-white">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<h2 class="page-title">Transaction Details</h2>
+							</div>
+						</div>
+					</div>
+
+					<div class="row row-deck row-cards">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-header text-break">
+									<h4 class="card-title">
+										<span id="Ktransaction"></span>
+									</h4>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<strong>TX Type</strong>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<span id="type"></span>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<strong>Previous TX</strong>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<span id="previous"></span>
+										</div>
+									</div>
+									<div class="row">
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<strong>Lead</strong>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<span id="lead"></span>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<strong>Date &amp; Time</strong>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<span id="timestamp"></span>
+										</div>
+									</div>
+									<div class="row">
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<strong>Milestone</strong>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<span id="milestone"></span>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<strong>Epoch</strong>
+										</div>
+										<div
+											class="col-lg-3 col-md-6 col-sm-6 col-xs-6"
+										>
+											<span id="epoch"></span>
+										</div>
+									</div>
+								</div>
+								<div class="card-footer text-break">
+									<div class="col">
+										<strong>Data: </strong>
+										<pre><code><span id="data"></span></code></pre>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer class="footer footer-transparent">
+					<div class="container">
+						<div
+							class="row text-center align-items-center flex-row-reverse"
+						>
+							<div class="col-lg-auto ml-lg-auto">
+								<ul class="list-inline list-inline-dots mb-0">
+									<li class="list-inline-item">
+										<a
+											href="https://github.com/karai/explore"
+											target="_blank"
+											class="link-secondary"
+											>Source code</a
+										>
+									</li>
+								</ul>
+							</div>
+							<div class="col-12 col-lg-auto mt-3 mt-lg-0">
+								Copyright © 2020 Powered By
+								<a
+									href="https://turtlecoin.lol/"
+									target="_blank"
+									class="link-secondary"
+									>TurtleCoin®</a
+								>. The source code is licensed under AGPL-3.0.
+							</div>
+						</div>
+					</div>
+				</footer>
+			</div>
 		</div>
-	</div>
-	<!-- Libs JS -->
-	<script src="./dist/js/bootstrap.bundle.min.js"></script>
-	<!-- Tabler Core -->
-	<script src="./dist/js/tabler.min.js"></script>
-	<!-- Dark Mode -->
-	<script src="./dist/js/dark-mode.js"></script>
-	<script>
-		document.body.style.display = "block"
-
-	</script>
-</body>
-
+		<!-- Libs JS -->
+		<script src="./dist/js/bootstrap.bundle.min.js"></script>
+		<!-- Tabler Core -->
+		<script src="./dist/js/tabler.min.js"></script>
+		<!-- Dark Mode -->
+		<script src="./dist/js/dark-mode.js"></script>
+		<script>
+			document.body.style.display = "block";
+		</script>
+	</body>
 </html>
