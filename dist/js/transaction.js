@@ -30,7 +30,17 @@ $(document).ready(function () {
 				moment(txn.time / 1000000).format("D/M/YYYY HH:mm")
 			);
 			$("#epoch").text(txn.epoc);
-			$("#data").text(JSON.stringify(JSON.parse(txn.data), null, 4));
+      $("#data").text(JSON.stringify(JSON.parse(txn.data), null, 4));
+
+      $("#theme-toggle").click(() => {
+        refreshCodeHighlightStyle();
+      });
+
+      refreshCodeHighlightStyle();
+
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+      });
 		},
 		error: function () {
 			return (document.location.href = "./index.html");
@@ -59,4 +69,11 @@ function getTxTypeBadge(type) {
 	}
 
 	return `<span class="${badge}">${type}</span>`;
+}
+
+function refreshCodeHighlightStyle() {
+  const darkMode = $('body').hasClass('theme-dark');
+
+  $('#light-code').prop('disabled', darkMode);
+  $('#dark-code').prop('disabled', !darkMode);
 }
