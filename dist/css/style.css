@@ -151,3 +151,22 @@ a:hover {
 .vis-network:focus {
   outline: none;
 }
+
+@media (max-width: 767.98px) {
+   table.tx tr {
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: right;
+   }
+   table.tx th {
+      text-align: left;
+   }
+   table.tx tr td, 
+   table.tx tr th {
+    padding: 1.25rem;
+   }
+   table.tx tr:last-child td, 
+   table.tx tr:last-child th {
+      border-bottom: 1px solid rgba(110,117,130,.2);
+   }
+}
