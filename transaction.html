@@ -39,8 +39,10 @@
 			color="#43b380"
 		/>
 		<link href="./dist/css/tabler.min.css" rel="stylesheet" />
-		<link href="./dist/css/style.css" rel="stylesheet" />
-		<style>
+    <link href="./dist/css/style.css" rel="stylesheet" />
+    <link id="light-code" rel="stylesheet" href="./dist/css/highlightjs/gradient-light.css">
+    <link id="dark-code" rel="stylesheet" href="./dist/css/highlightjs/gradient-dark.css">
+    <style>
 			body {
 				display: none;
 			}
@@ -53,7 +55,8 @@
 			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js"
 			integrity="sha512-Q1f3TS3vSt1jQ8AwP2OuenztnLU6LwxgyyYOG1jgMW/cbEMHps/3wjvnl1P3WTrF3chJUWEoxDUEjMxDV8pujg=="
 			crossorigin="anonymous"
-		></script>
+    ></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js"></script>
 		<script src="./dist/js/common.js"></script>
 		<script src="./dist/js/transaction.js"></script>
 	</head>
@@ -82,7 +85,7 @@
 					</a>
 					<div class="navbar-nav flex-row order-md-last">
 						<div class="nav-item d-md-flex">
-							<a href="#" class="nav-link px-0 mode-toggle">
+							<a href="#" id="theme-toggle" class="nav-link px-0 mode-toggle">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									class="icon icon-md"
