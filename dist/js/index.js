@@ -346,8 +346,15 @@ function pruneGraph() {
 }
 
 function getTxDataText(data, hash) {
-  const json = JSON.parse(data);
+  let json;
   let text = 'TEXT';
+
+  try {
+    json = JSON.parse(data);
+  } catch (err) {
+    // console.log(err);
+    // console.log(data);
+  }
 
   if (json && json instanceof Object) {
     text = `JSON`;
