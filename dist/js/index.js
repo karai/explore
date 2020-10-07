@@ -230,22 +230,24 @@ function initTransactionsTable() {
 }
 
 function updateTransactionsData(txs) {
-  transactionsTable.clear();
-
-  const rows = txs.map(tx => [tx.time, tx.type, tx.hash, tx.data]);
-  transactionsTable.rows.add(rows);
-
-  transactionsTable.draw(false);
+  let redrawTable = false;
 
   txs.forEach(tx => {
     if (!allTxs.some(t => t.hash === tx.hash)) {
       allTxs.push(tx);
+
+      transactionsTable.rows.add([[tx.time, tx.type, tx.hash, tx.data]]);
+      redrawTable = true;
 
       if (!txQueue.some(t => t.hash === tx.hash)) {
         txQueue.push(tx);
       }
     }
   });
+
+  if (redrawTable) {
+    transactionsTable.draw(false);
+  }
 }
 
 function updateGraph(txs) {
