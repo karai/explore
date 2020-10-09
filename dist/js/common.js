@@ -18,17 +18,17 @@ function getQueryStringParam (key) {
 }
 
 function getHashSegments(hash) {
-  let result = `<span>${hash.substring(0, 2)}</span>`;
-  let offset = 2;
+	let result = `<span></span>`;
+	let offset = 2;
 
-  while (offset < hash.length - 10) {
-    result += getHashPixel(hash, offset);
-    offset += 6;
-  }
+	while (offset < hash.length - 10) {
+		result += getHashPixel(hash, offset);
+		offset += 6;
+	}
 
-  result += `<span>${hash.slice(-2)}</span>`;
+	result += `<span></span>`;
 
-  return result;
+	return result;
 }
 
 function getHashPixel(hash, offset) {
