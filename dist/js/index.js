@@ -218,7 +218,8 @@ function initTransactionsTable() {
       }
     }],
     searching: false,
-    ordering: false,
+    ordering: true,
+    order: [[0, 'desc']],
     info: false,
     paging: false,
     lengthMenu: -1,
