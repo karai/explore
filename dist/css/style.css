@@ -152,6 +152,15 @@ a:hover {
   outline: none;
 }
 
+span.transaction-hash {
+   display: flex;
+   max-width: 95%;
+}
+
+span.transaction-hash span {
+   width: -webkit-fill-available;
+}
+
 @media (max-width: 767.98px) {
    table.tx tr {
     display: grid;
@@ -168,5 +177,8 @@ a:hover {
    table.tx tr:last-child td, 
    table.tx tr:last-child th {
       border-bottom: 1px solid rgba(110,117,130,.2);
+   }
+   span.transaction-hash {
+      max-width: 100%;
    }
 }
