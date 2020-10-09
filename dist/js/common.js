@@ -18,7 +18,7 @@ function getQueryStringParam (key) {
 }
 
 function getHashSegments(hash) {
-	let result = `<span></span>`;
+	let result = ` `;
 	let offset = 2;
 
 	while (offset < hash.length - 10) {
@@ -26,7 +26,7 @@ function getHashSegments(hash) {
 		offset += 6;
 	}
 
-	result += `<span></span>`;
+	result += ` `;
 
 	return result;
 }

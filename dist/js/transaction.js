@@ -18,9 +18,9 @@ $(document).ready(function () {
 			$("#previous").append(
 				`<a href="./transaction.html?channel=${channel}&hash=${
 					tx.prev
-				}" data-toggle="tooltip" title="${
+				}"><span class="transaction-hash" data-toggle="tooltip" title="${
 					tx.prev
-				}"><span class="transaction-hash">${getHashSegments(
+				}">${getHashSegments(
 					tx.prev
 				)}</span></a>`
 			);
