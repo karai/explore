@@ -368,7 +368,7 @@ function getTxDataText(data, hash) {
   }
 
   const chl = encodeURIComponent(channel.url);
-  return `<a href="./transaction.html?channel=${chl}&hash=${hash}"<span class="transaction-hash">${text}</span></a>`;
+  return `<a href="./transaction.html?channel=${chl}&hash=${hash}"><span class="transaction-hash">${text}</span></a>`;
 }
 
 function getGraphOptions() {
