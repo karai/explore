@@ -302,25 +302,34 @@ function updateGraph(txs) {
   }
 }
 
-function addNode(transaction, parentId = 'root') {
-  if (!transaction) {
+function addNode(tx, parentId = 'root') {
+  if (!tx) {
     // if no transaction is provided, we treat it as the root node of the graph
-    graph.nodes.add({ id: 'root', color: '#43b380', shape: 'hexagon' });
+    graph.nodes.add({ id: 'root', color: '#43b380', shape: 'hexagon', size: 40 });
     graphHistory.push({ id: 'root', lead: true });
 
     return;
   }
 
-  graph.nodes.add({ id: transaction.hash, color: '#43b380' });
-  graphHistory.push({ id: transaction.hash, lead: transaction.lead });
+  if (!graphHistory.some(n => n.id === tx.subg)) {
+    graphHistory.push({ id: tx.subg, lead: true });
+
+    graph.nodes.add({ id: tx.subg, color: '#43b380', shape: 'hexagon' });
+    graph.edges.add({ from: 'root', to: tx.subg });
+  }
+
+  parentId = tx.subg;
+
+  graph.nodes.add({ id: tx.hash, color: '#43b380' });
+  graphHistory.push({ id: tx.hash, lead: tx.lead });
 
   const parentNode = graph.nodes.get(parentId);
 
   if (parentNode) {
-    graph.edges.add({ from: parentId, to: transaction.hash });
+    graph.edges.add({ from: parentId, to: tx.hash });
   }
 
-  const index = txQueue.findIndex(t => t.hash === transaction.hash);
+  const index = txQueue.findIndex(t => t.hash === tx.hash);
   txQueue.splice(index, 1);
 }
 
@@ -329,7 +338,7 @@ function pruneGraph() {
     return;
   }
 
-  const candidates = graphHistory.slice(0, 2);
+  const candidates = graphHistory.slice(0, 10);
   let selected = candidates.find(c => !c.lead);
 
   if (!selected) {
