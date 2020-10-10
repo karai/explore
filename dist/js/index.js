@@ -29,10 +29,16 @@ let channel;
 let transactionsTable;
 let network;
 let lastFitScreen = 0;
-let firstConnectionMade = false;
 
 $(document).ready(function() {
   $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+  graph.nodes = new vis.DataSet([]);
+  graph.edges = new vis.DataSet([]);
+
+  const graphView = document.getElementById("graph-view");
+  network = new vis.Network(graphView, graph, getGraphOptions());
+  addNode();
 
   initChannelSelector();
   initTransactionsTable();
@@ -54,12 +60,6 @@ $(document).ready(function() {
       }
     }
   });
-
-  graph.nodes = new vis.DataSet([]);
-  graph.edges = new vis.DataSet([]);
-
-  const container = document.getElementById("graph-view");
-  network = new vis.Network(container, graph, getGraphOptions());
 });
 
 function fetchChannelStats(clear = false) {
@@ -203,7 +203,7 @@ function initTransactionsTable() {
       render: function (data, type, row, meta) {
         if (type === 'display') {
           const chl = encodeURIComponent(channel.url);
-          data = `<a href="./transaction.html?channel=${chl}&hash=${data}" data-toggle="tooltip" data-placement="top" title="${data}"><span class="transaction-hash">${getHashSegments(data)}</span></a>`;
+          data = `<a href="./transaction.html?channel=${chl}&hash=${data}"><span class="transaction-hash" data-toggle="tooltip" data-placement="top" title="${data}">${getHashSegments(data)}</span></a>`;
         }
         return data;
       }
@@ -218,7 +218,8 @@ function initTransactionsTable() {
       }
     }],
     searching: false,
-    ordering: false,
+    ordering: true,
+    order: [[0, 'desc']],
     info: false,
     paging: false,
     lengthMenu: -1,
@@ -230,22 +231,24 @@ function initTransactionsTable() {
 }
 
 function updateTransactionsData(txs) {
-  transactionsTable.clear();
-
-  const rows = txs.map(tx => [tx.time, tx.type, tx.hash, tx.data]);
-  transactionsTable.rows.add(rows);
-
-  transactionsTable.draw(false);
+  let redrawTable = false;
 
   txs.forEach(tx => {
     if (!allTxs.some(t => t.hash === tx.hash)) {
       allTxs.push(tx);
+
+      transactionsTable.rows.add([[tx.time, tx.type, tx.hash, tx.data]]);
+      redrawTable = true;
 
       if (!txQueue.some(t => t.hash === tx.hash)) {
         txQueue.push(tx);
       }
     }
   });
+
+  if (redrawTable) {
+    transactionsTable.draw(false);
+  }
 }
 
 function updateGraph(txs) {
@@ -293,17 +296,22 @@ function updateGraph(txs) {
   }
 }
 
-function addNode(transaction, parentId = undefined) {
-  graph.nodes.add({ id: transaction.hash, color: '#43b380', font: {color: '#ffffff'}});
+function addNode(transaction, parentId = 'root') {
+  if (!transaction) {
+    // if no transaction is provided, we treat it as the root node of the graph
+    graph.nodes.add({ id: 'root', color: '#43b380', shape: 'hexagon' });
+    graphHistory.push({ id: 'root', lead: true });
+
+    return;
+  }
+
+  graph.nodes.add({ id: transaction.hash, color: '#43b380' });
   graphHistory.push({ id: transaction.hash, lead: transaction.lead });
 
-  if (parentId) {
-    graph.edges.add({ from: parentId, to: transaction.hash });
+  const parentNode = graph.nodes.get(parentId);
 
-    if (!firstConnectionMade) {
-      firstConnectionMade = true;
-      pruneOrphans();
-    }
+  if (parentNode) {
+    graph.edges.add({ from: parentId, to: transaction.hash });
   }
 
   const index = txQueue.findIndex(t => t.hash === transaction.hash);
@@ -315,8 +323,13 @@ function pruneGraph() {
     return;
   }
 
-  const candidates = graphHistory.slice(0, 50);
-  const selected = candidates.find(c => !c.lead);
+  const candidates = graphHistory.slice(0, 2);
+  let selected = candidates.find(c => !c.lead);
+
+  if (!selected) {
+    selected = candidates[0];
+  }
+
   const connectedNodes = network.getConnectedNodes(selected.id);
 
   graphHistory.splice(graphHistory.indexOf(selected), 1);
@@ -333,22 +346,16 @@ function pruneGraph() {
   });
 }
 
-function pruneOrphans() {
-  for (let i = graphHistory.length - 1; i >= 0; i--) {
-    const candidate = graphHistory[i];
-    const connections = network.getConnectedNodes(candidate.id);
-
-    if (connections.length === 0) {
-      const orphan = graphHistory.find(n => n.id === candidate.id);
-      graphHistory.splice(graphHistory.indexOf(orphan), 1);
-      graph.nodes.remove(candidate.id);
-    }
-  }
-}
-
 function getTxDataText(data, hash) {
-  const json = JSON.parse(data);
+  let json;
   let text = 'TEXT';
+
+  try {
+    json = JSON.parse(data);
+  } catch (err) {
+    // console.log(err);
+    // console.log(data);
+  }
 
   if (json && json instanceof Object) {
     text = `JSON`;

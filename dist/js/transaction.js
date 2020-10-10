@@ -12,25 +12,35 @@ $(document).ready(function () {
 		dataType: "json",
 		type: "GET",
 		cache: "false",
-		success: function (txn) {
-			$("#Ktransaction").text(txn.hash);
-			$("#type").append(getTxTypeBadge(txn.type));
+		success: function (tx) {
+			$("#Ktransaction").text(tx.hash);
+			$("#type").append(getTxTypeBadge(tx.type));
 			$("#previous").append(
 				`<a href="./transaction.html?channel=${channel}&hash=${
-					txn.prev
-				}" data-toggle="tooltip" title="${
-					txn.prev
-				}"><span class="transaction-hash">${getHashSegments(
-					txn.prev
+					tx.prev
+				}"><span class="transaction-hash" data-toggle="tooltip" title="${
+					tx.prev
+				}">${getHashSegments(
+					tx.prev
 				)}</span></a>`
 			);
-			$("#lead").text(txn.lead);
-			$("#milestone").text(txn.mile);
+			$("#size").text(getTxSize(tx));
+			$("#milestone").text(tx.mile);
 			$("#timestamp").text(
-				moment(txn.time / 1000000).format("D/M/YYYY HH:mm")
+				moment(tx.time / 1000000).format("D/M/YYYY HH:mm")
 			);
-			$("#epoch").text(txn.epoc);
-			$("#data").text(JSON.stringify(JSON.parse(txn.data), null, 4));
+			$("#epoch").text(tx.epoc);
+      $("#data").text(JSON.stringify(JSON.parse(tx.data), null, 4));
+
+      $("#theme-toggle").click(() => {
+        refreshCodeHighlightStyle();
+      });
+
+      refreshCodeHighlightStyle();
+
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+      });
 		},
 		error: function () {
 			return (document.location.href = "./index.html");
@@ -59,4 +69,23 @@ function getTxTypeBadge(type) {
 	}
 
 	return `<span class="${badge}">${type}</span>`;
+}
+
+function getTxSize(tx) {
+  const size = new Blob([JSON.stringify(tx)], {type : 'application/json'}).size;
+
+  if (size < 1000)
+    return `${size} bytes`;
+  else if (size < 1000000)
+    return `${size/1000} kB`;
+  else {
+    return `${size/1000000} MB`;
+  }
+}
+
+function refreshCodeHighlightStyle() {
+  const darkMode = $('body').hasClass('theme-dark');
+
+  $('#light-code').prop('disabled', darkMode);
+  $('#dark-code').prop('disabled', !darkMode);
 }
