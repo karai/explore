@@ -25,7 +25,7 @@ $(document).ready(function () {
       `);
       $("#size").text(getTxSize(tx));
       $("#subg").append(`
-        <a href="./transaction.html?channel=${channel}&hash=${tx.subg}">
+        <a href="#">
           <span class="transaction-hash" data-toggle="tooltip" title="${tx.subg}">
             ${getColorizedHash(tx.subg)}
           </span>
