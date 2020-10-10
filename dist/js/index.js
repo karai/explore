@@ -206,7 +206,7 @@ function initTransactionsTable() {
           data = `
             <a href="./transaction.html?channel=${chl}&hash=${data}">
               <span class="transaction-hash" data-toggle="tooltip" data-placement="top" title="${data}">
-                ${getColorizedHash(data)}
+                ${getColorizedHex(data)}
               </span>
             </a>
           `;

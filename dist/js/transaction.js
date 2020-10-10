@@ -19,7 +19,7 @@ $(document).ready(function () {
 			$("#previous").append(`
         <a href="./transaction.html?channel=${channel}&hash=${tx.prev}">
           <span class="transaction-hash" data-toggle="tooltip" title="${tx.prev}">
-            ${getColorizedHash(tx.prev)}
+            ${getColorizedHex(tx.prev)}
           </span>
         </a>
       `);
@@ -27,7 +27,7 @@ $(document).ready(function () {
       $("#subg").append(`
         <a href="#">
           <span class="transaction-hash" data-toggle="tooltip" title="${tx.subg}">
-            ${getColorizedHash(tx.subg)}
+            ${getColorizedHex(tx.subg)}
           </span>
         </a>
       `);

@@ -17,26 +17,24 @@ function getQueryStringParam (key) {
   }
 }
 
-function getColorizedHash(hash) {
+function getColorizedHex(hex, includeRemainder = false) {
 	let result = '';
   let offset = 0;
 
-	while (offset <= hash.length - 6) {
-		result += getHashPixel(hash, offset);
+	while (offset <= hex.length - 6) {
+		result += getHexPixel(hex.substring(offset, offset + 6));
 		offset += 6;
 	}
 
-  const remainder = hash.length - offset;
+  const remainder = hex.length - offset;
 
-  if (remainder > 0) {
-    const zero = '0';
-    result += getHashPixel(`${hash.substring(hash.length - remainder) + zero.repeat(6-remainder)}`) ;
+  if (remainder > 0 && includeRemainder) {
+    result += getHexPixel(`${hex.substring(hex.length - remainder) + '0'.repeat(6 - remainder)}`) ;
   }
 
 	return result;
 }
 
-function getHashPixel(hash, offset = 0) {
-  const color = `#${hash.substring(offset, offset + 6)}`;
-  return `<span style="color: transparent; background-color: ${color}">X</span>`;
+function getHexPixel(hex) {
+  return `<span style="color: transparent; background-color: #${hex}">X</span>`;
 }
