@@ -17,21 +17,26 @@ function getQueryStringParam (key) {
   }
 }
 
-function getHashSegments(hash) {
-	let result = ` `;
-	let offset = 2;
+function getColorizedHash(hash) {
+	let result = '';
+  let offset = 0;
 
-	while (offset < hash.length - 10) {
+	while (offset <= hash.length - 6) {
 		result += getHashPixel(hash, offset);
 		offset += 6;
 	}
 
-	result += ` `;
+  const remainder = hash.length - offset;
+
+  if (remainder > 0) {
+    const zero = '0';
+    result += getHashPixel(`${hash.substring(hash.length - remainder) + zero.repeat(6-remainder)}`) ;
+  }
 
 	return result;
 }
 
-function getHashPixel(hash, offset) {
+function getHashPixel(hash, offset = 0) {
   const color = `#${hash.substring(offset, offset + 6)}`;
   return `<span style="color: transparent; background-color: ${color}">X</span>`;
 }

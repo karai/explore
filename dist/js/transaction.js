@@ -13,22 +13,31 @@ $(document).ready(function () {
 		type: "GET",
 		cache: "false",
 		success: function (tx) {
+      console.log(tx.subg);
+      console.log(tx.subg.length);
+
 			$("#Ktransaction").text(tx.hash);
 			$("#type").append(getTxTypeBadge(tx.type));
-			$("#previous").append(
-				`<a href="./transaction.html?channel=${channel}&hash=${
-					tx.prev
-				}"><span class="transaction-hash" data-toggle="tooltip" title="${
-					tx.prev
-				}">${getHashSegments(
-					tx.prev
-				)}</span></a>`
-			);
-			$("#size").text(getTxSize(tx));
+			$("#previous").append(`
+        <a href="./transaction.html?channel=${channel}&hash=${tx.prev}">
+          <span class="transaction-hash" data-toggle="tooltip" title="${tx.prev}">
+            ${getColorizedHash(tx.prev)}
+          </span>
+        </a>
+      `);
+      $("#size").text(getTxSize(tx));
+      $("#subg").append(`
+        <a href="./transaction.html?channel=${channel}&hash=${tx.subg}">
+          <span class="transaction-hash" data-toggle="tooltip" title="${tx.subg}">
+            ${getColorizedHash(tx.subg)}
+          </span>
+        </a>
+      `);
 			$("#milestone").text(tx.mile);
 			$("#timestamp").text(
 				moment(tx.time / 1000000).format("D/M/YYYY HH:mm")
-			);
+      );
+      $("#lead").text(tx.lead);
 			$("#epoch").text(tx.epoc);
       $("#data").text(JSON.stringify(JSON.parse(tx.data), null, 4));
 
