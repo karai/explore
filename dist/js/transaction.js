@@ -13,7 +13,6 @@ $(document).ready(function () {
 		type: "GET",
 		cache: "false",
 		success: function (tx) {
-
 			$("#Ktransaction").text(tx.hash);
 			$("#type").append(getTxTypeBadge(tx.type));
 			$("#previous").append(`
