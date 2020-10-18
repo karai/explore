@@ -285,7 +285,7 @@ function updateGraph(txs) {
       }
 
       if (!graphHistory.some(n => n.id === tx.subg)) {
-        graphHistory.push({ id: tx.subg, lead: true, parent: 'root' });
+        graphHistory.push({ id: tx.subg, lead: true });
 
         graph.nodes.add({ id: tx.subg, color: '#43b380', shape: 'hexagon', size: 25 });
         graph.edges.add({ from: 'root', to: tx.subg });
@@ -304,13 +304,13 @@ function addNode(tx, parentId = 'root') {
   if (!tx) {
     // if no transaction is provided, we treat it as the root node of the graph
     graph.nodes.add({ id: 'root', color: '#43b380', shape: 'hexagon', size: 40 });
-    graphHistory.push({ id: 'root', lead: true, parent: 'root' });
+    graphHistory.push({ id: 'root', lead: true });
 
     return;
   }
 
   graph.nodes.add({ id: tx.hash, color: '#43b380' });
-  graphHistory.push({ id: tx.hash, lead: tx.lead, parent: tx.prnt });
+  graphHistory.push({ id: tx.hash, lead: tx.lead });
 
   const parentNode = graph.nodes.get(parentId);
 
