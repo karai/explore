@@ -331,7 +331,12 @@ function addNode(tx, parentId = 'root') {
 
   parentId = tx.subg;
 
-  graph.nodes.add({ id: tx.hash, color: '#43b380' });
+  graph.nodes.add({
+    id: tx.hash,
+    color: '#43b380',
+    title: `<div>${getColorizedHex(tx.hash)}</div>`,
+  });
+
   graphHistory.push({ id: tx.hash, lead: tx.lead });
 
   const parentNode = graph.nodes.get(parentId);
