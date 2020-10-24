@@ -40,6 +40,17 @@ $(document).ready(function() {
   network = new vis.Network(graphView, graph, getGraphOptions());
   addNode();
 
+  network.on("click", function (params) {
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      const tx = allTxs.find(t => t.hash === nodeId);
+
+      if (tx) {
+        window.location.href = `./transaction.html?channel=${channel.url}&hash=${nodeId}`;
+      }
+    }
+  });
+
   initChannelSelector();
   initTransactionsTable();
 
@@ -388,8 +399,8 @@ function getGraphOptions() {
       hideEdgesOnDrag: false,
       hideEdgesOnZoom: false,
       hideNodesOnDrag: false,
-      hover: false,
-      hoverConnectedEdges: true,
+      hover: true,
+      hoverConnectedEdges: false,
       keyboard: {
         enabled: false,
         speed: {x: 10, y: 10, zoom: 0.02},
