@@ -13,7 +13,8 @@ const config = {
   txQuerySize: 200,
   graphMaxSize: 350,
   txQueryInterval: 20000,
-  fitScreenInterval: 4000
+  fitScreenInterval: 4000,
+  fitScreenRestart: 10000
 }
 
 const graph = {
@@ -29,6 +30,7 @@ let channel;
 let transactionsTable;
 let network;
 let lastFitScreen = 0;
+let lastInteraction = 0;
 
 $(document).ready(function() {
   $("body").tooltip({ selector: '[data-toggle=tooltip]' });
@@ -41,6 +43,8 @@ $(document).ready(function() {
   addNode();
 
   network.on("click", function (params) {
+    lastInteraction = Date.now();
+
     if (params.nodes.length > 0) {
       const nodeId = params.nodes[0];
       const tx = allTxs.find(t => t.hash === nodeId);
@@ -49,6 +53,14 @@ $(document).ready(function() {
         window.location.href = `./transaction.html?channel=${channel.url}&hash=${nodeId}`;
       }
     }
+  });
+
+  network.on("zoom", function (_) {
+    lastInteraction = Date.now();
+  });
+
+  network.on("dragStart", function (_) {
+    lastInteraction = Date.now();
   });
 
   initChannelSelector();
@@ -280,7 +292,10 @@ function updateGraph(txs) {
   const items = JSON.parse(JSON.stringify(txs));
   const now = Date.now();
 
-  if (now > lastFitScreen + config.fitScreenInterval) {
+  if (
+    now > lastInteraction + config.fitScreenRestart &&
+    now > lastFitScreen + config.fitScreenInterval
+  ) {
     network.fit({ animation: { duration: 800 } });
     lastFitScreen = now;
   }
@@ -380,7 +395,7 @@ function getGraphOptions() {
   return {
     interaction:{
       dragNodes:false,
-      dragView: false,
+      dragView: true,
       hideEdgesOnDrag: false,
       hideEdgesOnZoom: false,
       hideNodesOnDrag: false,
@@ -397,7 +412,7 @@ function getGraphOptions() {
       selectConnectedEdges: true,
       tooltipDelay: 300,
       zoomSpeed: 1,
-      zoomView: false
+      zoomView: true
     },
     layout: {
       randomSeed: undefined,
