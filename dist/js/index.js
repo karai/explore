@@ -10,8 +10,8 @@ const channels = {
 }
 
 const config = {
-  txQuerySize: 300,
-  graphMaxSize: 280,
+  txQuerySize: 200,
+  graphMaxSize: 350,
   txQueryInterval: 20000,
   fitScreenInterval: 4000
 }
@@ -21,9 +21,9 @@ const graph = {
   edges: undefined
 }
 
-const allTxs = [];
-const txQueue = [];
-const graphHistory = [];
+let allTxs = [];
+let txQueue = [];
+let graphHistory = [];
 
 let channel;
 let transactionsTable;
@@ -165,7 +165,11 @@ function startUpdateGraphLoop() {
 
     setTimeout(function () {
       updateGraph(txQueue);
-      pruneGraph();
+
+      if (graphHistory.length > config.graphMaxSize) {
+        resetGraph();
+      }
+
       update();
     }, delay)
   }
@@ -284,7 +288,6 @@ function updateGraph(txs) {
   while (items.length > 0) {
     for(let i = items.length - 1; i >= 0; i--) {
       const tx = items[i];
-
       const existingNode = graph.nodes.get(tx.hash);
 
       if (existingNode) {
@@ -292,22 +295,17 @@ function updateGraph(txs) {
         continue;
       }
 
-      const myLead = allTxs.find(t => t.lead && t.subg === tx.subg);
-      let parentNode = myLead ? graph.nodes.get(myLead.hash) : undefined;
+      if (!graphHistory.some(n => n.id === tx.subg)) {
+        graphHistory.push({ id: tx.subg, lead: true });
 
-      if (tx.lead) {
-        const parentTx = allTxs.find(t => t.hash === tx.prev);
-        parentNode = parentTx ? graph.nodes.get(parentTx.hash) : undefined;
+        graph.nodes.add({ id: tx.subg, color: '#43b380', shape: 'hexagon', size: 25 });
+        graph.edges.add({ from: 'root', to: tx.subg });
       }
 
-      if (parentNode) {
-        addNode(tx, parentNode.id);
-        return;
-      }
-    }
+      const parent = graphHistory.find(n => n.id === tx.prnt);
+      const parentNodeId = parent ? parent.id : tx.subg;
 
-    if (items.length > 0) {
-      addNode(items[items.length-1]);
+      addNode(tx, parentNodeId);
       return;
     }
   }
@@ -321,15 +319,6 @@ function addNode(tx, parentId = 'root') {
 
     return;
   }
-
-  if (!graphHistory.some(n => n.id === tx.subg)) {
-    graphHistory.push({ id: tx.subg, lead: true });
-
-    graph.nodes.add({ id: tx.subg, color: '#43b380', shape: 'hexagon' });
-    graph.edges.add({ from: 'root', to: tx.subg });
-  }
-
-  parentId = tx.subg;
 
   graph.nodes.add({
     id: tx.hash,
@@ -349,32 +338,23 @@ function addNode(tx, parentId = 'root') {
   txQueue.splice(index, 1);
 }
 
-function pruneGraph() {
-  if (graphHistory.length <= config.graphMaxSize) {
-    return;
+function resetGraph() {
+  const allEdges = graph.edges.get();
+  const allNodes = graph.nodes.get();
+
+  for (let i = allEdges.length - 1; i >= 0; i--) {
+    graph.edges.remove(allEdges[i]);
   }
 
-  const candidates = graphHistory.slice(0, 10);
-  let selected = candidates.find(c => !c.lead);
-
-  if (!selected) {
-    selected = candidates[0];
+  for (let i = allNodes.length - 1; i >= 0; i--) {
+    graph.nodes.remove(allNodes[i].id);
   }
 
-  const connectedNodes = network.getConnectedNodes(selected.id);
+  allTxs = [];
+  graphHistory = [];
+  txQueue = [];
 
-  graphHistory.splice(graphHistory.indexOf(selected), 1);
-  graph.nodes.remove(selected.id);
-
-  connectedNodes.forEach(node => {
-    const connections = network.getConnectedNodes(node);
-
-    if (connections.length === 0) {
-      const orphan = graphHistory.find(n => n.id === node.id);
-      graphHistory.splice(graphHistory.indexOf(orphan), 1);
-      graph.nodes.remove(node);
-    }
-  });
+  addNode();
 }
 
 function getTxDataText(data, hash) {
@@ -441,10 +421,10 @@ function getGraphOptions() {
       barnesHut: {
         theta: 0.5,
         gravitationalConstant: -8000,
-        centralGravity: 0.6,
+        centralGravity: 0.1,
         springLength: 95,
-        springConstant: 0.04,
-        damping: 0.09,
+        springConstant: 0.44,
+        damping: 0.19,
         avoidOverlap: 0
       },
       forceAtlas2Based: {
@@ -483,7 +463,7 @@ function getGraphOptions() {
       },
       timestep: 0.5,
       adaptiveTimestep: true,
-      wind: { x: -0.35, y: 0.32 }
+      wind: { x: -0.05, y: 0.02 }
     }
   }
 }
