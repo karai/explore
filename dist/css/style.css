@@ -36,8 +36,8 @@ a:hover {
 .btn-primary:active,
 .btn-primary.focus,
 .btn-primary:focus {
-	background-color: #3ca173;
-	border-color: #3ca173;
+	background-color: #3ca163;
+	border-color: #3ca183;
 }
 
 .chart#blockchainChart {
@@ -49,8 +49,8 @@ a:hover {
 }
 
 .table th {
-	font-weight: 600;
-	color: #354052;
+	font-weight: 500;
+	color: #354072;
 }
 
 @media (min-width: 64rem) {
@@ -64,11 +64,11 @@ a:hover {
 }
 
 .form-control.is-success {
-	border-color: #5eba00;
+	border-color: #5eba10;
 }
 
 .bg-green {
-	background: #43b380;
+	background: #43b390;
 }
 
 .text-break {
